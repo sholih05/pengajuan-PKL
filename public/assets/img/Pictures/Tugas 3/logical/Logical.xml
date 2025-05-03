@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<LogicalDesign class="oracle.dbtools.crest.model.design.logical.LogicalDesign" name="Logical" id="4E24D0EE-CBC1-5404-BBFA-4F7CD0CECA44" mainViewID="2A26D2DF-C521-4BB2-693A-6F640650753F">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 06:50:06 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+</LogicalDesign>

@@ -1,0 +1,103 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="AF653DAA-A22C-A01B-DBDC-CADB842A1F92" name="transaksi_pembelian_distributor">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>E9FE02E4-C6AD-3FA1-8CA5-CDD69EC8AACD</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_pembelian" id="6D479D62-0AF5-CC09-DF59-5EC8885C373F">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>77BF81C8-62C7-7E84-95B6-4EAB4741DACC</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>6</dataTypeSize>
+<ownDataTypeParameters>6,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="tanggal" id="76D3026A-9FD7-97AC-355D-CB1402F09A9D">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>19F622A4-CB4F-8A38-D855-DA6871D54EB4</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="distributor_id_distributor" id="0489D4A5-7DEE-E707-7397-CE15A6ADD855">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>71E48A7E-561F-F453-A0E8-EB507791C59C</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>6</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="31E1241E-6FE7-04C4-2A2E-55E6C02A6B36" referredColumn="899AA6AA-7518-C199-C60D-12F3A751D4D6"/>
+</associations>
+</Column>
+<Column name="karyawan_id_karyawan" id="6CFDD824-242B-A56B-8556-C12F69E4642D">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>774F715D-BB3D-9CA1-D30E-5385B178B660</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>6</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="97655DAD-D4C0-15E2-E121-B3ACBA46ECA7" referredColumn="2040C4F5-46B6-9B72-7AC1-10DD34917C07"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="8672EA93-E4D5-EC73-A7B4-2B3507BCC6EB" name="transaksi_pembelian_distributor_PK">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>CE17E97E-C6E8-6992-45DB-35768F6D0027</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="6D479D62-0AF5-CC09-DF59-5EC8885C373F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="9E3D42A5-0A07-E5CA-ABD0-CF01205A633F" name="transaksi_pembelian_distributor_distributor_FK">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>2CF9F91C-5B7E-29EA-83A7-C9BCBC133DEF</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="0489D4A5-7DEE-E707-7397-CE15A6ADD855"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="4A61CFBD-9C53-F92A-AD28-BC103AAAE6BA" name="transaksi_pembelian_distributor_karyawan_FK">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>485B24B3-74D9-A3A7-B77B-F0B8728A036F</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="6CFDD824-242B-A56B-8556-C12F69E4642D"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

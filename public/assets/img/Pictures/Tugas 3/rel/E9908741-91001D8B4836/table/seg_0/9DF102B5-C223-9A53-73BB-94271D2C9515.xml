@@ -1,0 +1,74 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="9DF102B5-C223-9A53-73BB-94271D2C9515" name="distributor">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>54FBD0A3-25A6-C945-8575-D0A635D068D6</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_distributor" id="899AA6AA-7518-C199-C60D-12F3A751D4D6">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>72ABBED6-17ED-ACA5-8F1B-102B585453EB</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>6</dataTypeSize>
+<ownDataTypeParameters>6,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="nama_distributor" id="0D03DE46-CD2E-A0B2-371B-E1E64B5DE6B5">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>3D778481-6547-816D-B0E4-8D702F74CFA9</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<ownDataTypeParameters>30,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="alamat_distributor" id="32C64909-8AF1-313C-522E-1DF431F377C7">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>05EFFC85-C6D0-883F-ABC3-216619CD4277</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="no_hp_distributor" id="9228F41E-CFA9-CC60-1F36-4747C16E3269">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>279BF02C-839B-14C9-947F-4E7244C2F478</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>14</dataTypeSize>
+<ownDataTypeParameters>14,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="3A9BB170-64AD-92AD-4498-FF79D5730EFF" name="distributor_PK">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>D0B64233-F390-238A-42CE-20AF487D76AE</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="899AA6AA-7518-C199-C60D-12F3A751D4D6"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

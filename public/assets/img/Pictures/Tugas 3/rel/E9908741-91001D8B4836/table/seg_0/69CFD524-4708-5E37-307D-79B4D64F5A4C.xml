@@ -1,0 +1,127 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="69CFD524-4708-5E37-307D-79B4D64F5A4C" name="detail_pembelian_distributor">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>5E1E7A22-16EE-6310-847D-9DF3D87935CD</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_detail_distributor" id="5A4AC69C-3D0C-DCAA-08B5-320219D3782A">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>E06F9478-9820-2292-443F-AB0D6B5292E8</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>6</dataTypeSize>
+<ownDataTypeParameters>6,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="nama_distributor" id="0CCCEBD8-FE76-90E2-623A-30268ACF081E">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>5B085536-F8DA-0D84-B2A4-2DB1EC26B062</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="jumlah_pembelian" id="69B113A3-3B5B-DA06-898F-0A3F79867198">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>1CADDD88-5A1B-896B-6322-957CE06661B6</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="jenis_barang" id="4C15A875-35F5-16CB-8516-D0964CB8C4BE">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>5B8A5F80-C89F-FD31-A12A-B1F9545F2BAE</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="produk_id_produk" id="0A0BB3D1-16F2-5CB8-F9C3-A27653F26BE6">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>59485B9F-ED3B-31FA-D958-CB0EF8FD8F4A</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>6</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="7E6DF757-4C82-8B7B-82C7-6ABBDC3E9FD3" referredColumn="5A01785A-85BD-8A75-C633-7D0E69A93B57"/>
+</associations>
+</Column>
+<Column name="transaksi_pembelian_distributor_id_pembelian" id="C44CD149-9902-AC2A-2CBC-2A99CDA0FA03">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>6CC92173-B86A-A24A-B91C-B4FD8B72A087</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>6</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="2244CD49-B0A3-FD6F-8611-F1A5B6242680" referredColumn="6D479D62-0AF5-CC09-DF59-5EC8885C373F"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="939CE95D-CA99-86E5-40DC-284C4C88F8C1" name="detail_pembelian_distributor_PK">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>43CFA39A-5FDF-77A2-5546-0834B38075F1</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="5A4AC69C-3D0C-DCAA-08B5-320219D3782A"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="61189CB8-5A8E-EAAC-5F31-ED8E73B92AFB" name="detail_pembelian_distributor_produk_FK">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>841800ED-485F-9CF8-7DD5-B8A86BFED93B</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="0A0BB3D1-16F2-5CB8-F9C3-A27653F26BE6"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="1E3DF860-9EAE-F351-629D-3307A587D44C" name="detail_pembelian_distributor_transaksi_pembelian_distributor_FK">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>B4AE4191-23AD-8EFA-BC71-05719DF5F5FF</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C44CD149-9902-AC2A-2CBC-2A99CDA0FA03"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

@@ -1,0 +1,17 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="7E6DF757-4C82-8B7B-82C7-6ABBDC3E9FD3" containerWithKeyObject="69CFD524-4708-5E37-307D-79B4D64F5A4C" localFKIndex="61189CB8-5A8E-EAAC-5F31-ED8E73B92AFB" name="detail_pembelian_distributor_produk_FK">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>841800ED-485F-9CF8-7DD5-B8A86BFED93B</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<referredTableLongName>produk</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>F1EE8C69-0F6E-A8B7-D4A5-08546C04CB51</referredTableID>
+<keyObject>05591CFC-7CF4-596E-16B4-3CF00C9430A8</keyObject>
+<referredKeyID>05591CFC-7CF4-596E-16B4-3CF00C9430A8</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>id_produk</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

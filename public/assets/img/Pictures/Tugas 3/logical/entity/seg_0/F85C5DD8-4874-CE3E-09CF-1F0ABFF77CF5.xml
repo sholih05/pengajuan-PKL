@@ -1,0 +1,96 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="F85C5DD8-4874-CE3E-09CF-1F0ABFF77CF5" name="produk">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 06:55:12 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id_produk" id="DA53F730-7D98-393E-8FBD-272FD83075C0">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 07:39:01 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>6</dataTypeSize>
+<ownDataTypeParameters>6,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="nama_produk" id="33A63221-CF9F-EDF3-A07D-1203D52C230F">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 07:39:29 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>25</dataTypeSize>
+<ownDataTypeParameters>25,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="harga" id="E206964C-E8ED-5931-DA18-2838C166BB46">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 07:40:05 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="jenis" id="A4C02ECF-F469-3214-1035-D6C1655E9915">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 07:42:17 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="stok" id="D63724CE-DD43-4DB1-9847-64A8578E7B3B">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 07:42:51 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="3507EA02-B43D-FD2E-9269-729C40B8C8AF" name="produk PK">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 07:39:27 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>DA53F730-7D98-393E-8FBD-272FD83075C0</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

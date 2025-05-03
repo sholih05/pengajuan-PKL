@@ -1,0 +1,84 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="F1EE8C69-0F6E-A8B7-D4A5-08546C04CB51" name="produk">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>F85C5DD8-4874-CE3E-09CF-1F0ABFF77CF5</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_produk" id="5A01785A-85BD-8A75-C633-7D0E69A93B57">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>DA53F730-7D98-393E-8FBD-272FD83075C0</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>6</dataTypeSize>
+<ownDataTypeParameters>6,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="nama_produk" id="27B7E50D-4225-FFCC-8CE2-802497E3AB9F">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>33A63221-CF9F-EDF3-A07D-1203D52C230F</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>25</dataTypeSize>
+<ownDataTypeParameters>25,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="harga" id="F6C7821C-71B6-60F8-CA0F-F8FAEE9240E0">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>E206964C-E8ED-5931-DA18-2838C166BB46</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="jenis" id="B5E98586-10BC-F89E-0182-2B5145CBB2DD">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>A4C02ECF-F469-3214-1035-D6C1655E9915</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="stok" id="7A1F5B26-5884-06E9-A8CF-014C8210F026">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>D63724CE-DD43-4DB1-9847-64A8578E7B3B</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="05591CFC-7CF4-596E-16B4-3CF00C9430A8" name="produk_PK">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>3507EA02-B43D-FD2E-9269-729C40B8C8AF</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="5A01785A-85BD-8A75-C633-7D0E69A93B57"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

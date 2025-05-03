@@ -1,0 +1,88 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="E9FE02E4-C6AD-3FA1-8CA5-CDD69EC8AACD" name="transaksi_pembelian_distributor">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 07:49:27 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id_pembelian" id="77BF81C8-62C7-7E84-95B6-4EAB4741DACC">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 07:56:59 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>6</dataTypeSize>
+<ownDataTypeParameters>6,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="tanggal" id="19F622A4-CB4F-8A38-D855-DA6871D54EB4">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 07:57:30 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id_distributor" id="71E48A7E-561F-F453-A0E8-EB507791C59C">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 08:02:50 UTC</createdTime>
+<generatorID>2CF9F91C-5B7E-29EA-83A7-C9BCBC133DEF</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<referedAttribute>72ABBED6-17ED-ACA5-8F1B-102B585453EB</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>6</dataTypeSize>
+<ownDataTypeParameters>6,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id_karyawan" id="774F715D-BB3D-9CA1-D30E-5385B178B660">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:30:32 UTC</createdTime>
+<generatorID>485B24B3-74D9-A3A7-B77B-F0B8728A036F</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<referedAttribute>39052675-D483-82BA-6A98-14E9FD1BFD3C</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>6</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="CE17E97E-C6E8-6992-45DB-35768F6D0027" name="pembelian_distributor PK">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 07:57:28 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>77BF81C8-62C7-7E84-95B6-4EAB4741DACC</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

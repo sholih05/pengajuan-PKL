@@ -1,0 +1,85 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="54FBD0A3-25A6-C945-8575-D0A635D068D6" name="distributor">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 07:47:42 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id_distributor" id="72ABBED6-17ED-ACA5-8F1B-102B585453EB">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 07:47:52 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>6</dataTypeSize>
+<ownDataTypeParameters>6,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="nama_distributor" id="3D778481-6547-816D-B0E4-8D702F74CFA9">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 07:47:59 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<ownDataTypeParameters>30,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="alamat_distributor" id="05EFFC85-C6D0-883F-ABC3-216619CD4277">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 07:48:38 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="no_hp_distributor" id="279BF02C-839B-14C9-947F-4E7244C2F478">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 07:49:01 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>14</dataTypeSize>
+<ownDataTypeParameters>14,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="D0B64233-F390-238A-42CE-20AF487D76AE" name="distributor PK">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 07:48:28 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>72ABBED6-17ED-ACA5-8F1B-102B585453EB</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

@@ -1,0 +1,21 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="Relation_9" directorySegmentName="seg_0" id="485B24B3-74D9-A3A7-B77B-F0B8728A036F">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:30:32 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<engineerTo>
+<item key="E9908741-83B1-450C-F66E-91001D8B4836" value="true"/>
+</engineerTo>
+<sourcePk>4BD92A0B-8241-A848-CD9C-99658749A18F</sourcePk>
+<identifying>false</identifying>
+<nameOnSource>Mengelola</nameOnSource>
+<nameOnTarget>Dikelola</nameOnTarget>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>4587256C-D802-2469-800B-CE03CDBE0C4D</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>E9FE02E4-C6AD-3FA1-8CA5-CDD69EC8AACD</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

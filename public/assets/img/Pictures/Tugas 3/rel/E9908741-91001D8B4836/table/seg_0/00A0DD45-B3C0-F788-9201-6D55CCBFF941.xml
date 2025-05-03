@@ -1,0 +1,103 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="00A0DD45-B3C0-F788-9201-6D55CCBFF941" name="detail_transaksi">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>FE81A124-95FE-0F18-0BBA-E6EA6265E4C6</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_detail" id="60C0CAB0-3A41-C36C-11FB-5F3E47FDCF94">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>7E742CC5-9196-13B4-C9A5-FB2CDBF9E510</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>6</dataTypeSize>
+<ownDataTypeParameters>6,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="jumlah" id="F63B6A2C-248C-8570-F67D-7CCCE68791F9">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>F74ED5F7-287C-874B-05C2-D93F7317F363</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="transaksi_id_transaksi" id="489FC3DA-291F-5A6B-31AA-209C537541C6">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>F45BA74F-9980-1DFF-F138-57996520E74A</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>6</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="F695CCED-CDE6-6054-2FDD-4C8992D5B960" referredColumn="F80E46A2-1791-7926-71CF-96E03F13D29C"/>
+</associations>
+</Column>
+<Column name="produk_id_produk" id="8EE065D7-FB8F-E9DF-FBEF-3F5CF96FC3FD">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>55444E2C-B6B2-F695-9304-CFAB64C347FF</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>6</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="51121986-3B48-EE30-8260-36E50896434C" referredColumn="5A01785A-85BD-8A75-C633-7D0E69A93B57"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="3D10BD7D-C1B8-3A3C-8E87-A55284DD3FD2" name="detail_transaksi_PK">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>97C5B7AA-E045-0A8E-9F28-24605D79817F</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="60C0CAB0-3A41-C36C-11FB-5F3E47FDCF94"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="4E580431-2DF6-47A1-C23C-DF504ABDCBFA" name="detail_transaksi_transaksi_FK">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>D36CA97D-ED1D-8566-9EC1-158B02AD33ED</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="489FC3DA-291F-5A6B-31AA-209C537541C6"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="779644A7-853A-F456-76B5-9C38F53223CE" name="detail_transaksi_produk_FK">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>F3A366CB-83F3-4568-B86C-E16488CFF9E9</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8EE065D7-FB8F-E9DF-FBEF-3F5CF96FC3FD"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

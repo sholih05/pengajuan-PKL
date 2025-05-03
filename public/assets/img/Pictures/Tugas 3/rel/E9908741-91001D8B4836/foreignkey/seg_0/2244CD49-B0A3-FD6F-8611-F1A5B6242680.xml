@@ -1,0 +1,17 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="2244CD49-B0A3-FD6F-8611-F1A5B6242680" containerWithKeyObject="69CFD524-4708-5E37-307D-79B4D64F5A4C" localFKIndex="1E3DF860-9EAE-F351-629D-3307A587D44C" name="detail_pembelian_distributor_transaksi_pembelian_distributor_FK">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-12 16:44:19 UTC</createdTime>
+<generatorID>B4AE4191-23AD-8EFA-BC71-05719DF5F5FF</generatorID>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<referredTableLongName>transaksi_pembelian_distributor</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>AF653DAA-A22C-A01B-DBDC-CADB842A1F92</referredTableID>
+<keyObject>8672EA93-E4D5-EC73-A7B4-2B3507BCC6EB</keyObject>
+<referredKeyID>8672EA93-E4D5-EC73-A7B4-2B3507BCC6EB</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>id_pembelian</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

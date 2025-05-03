@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<BusinessInfoDesign class="oracle.dbtools.crest.model.businessinfo.BusinessInfoDesign" name="Business Information" id="F5355D61-2B77-17B7-78F3-4C62E09AD91E">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 06:50:12 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+</BusinessInfoDesign>

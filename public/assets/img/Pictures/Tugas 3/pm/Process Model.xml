@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<ProcessModel class="oracle.dbtools.crest.model.design.process.ProcessModel" name="Process Model" id="0C74736F-B26D-DCF0-2584-C8B14CD39D85">
+<createdBy>ARS</createdBy>
+<createdTime>2022-10-11 06:50:10 UTC</createdTime>
+<ownerDesignName>Tugas 3</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+</ProcessModel>
