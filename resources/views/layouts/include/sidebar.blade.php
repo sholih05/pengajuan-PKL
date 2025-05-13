@@ -40,6 +40,12 @@
                         <i class="bi bi-circle"></i> <span>Pengajuan Surat</span>
                     </a>
                 </li>
+                <li>
+                    <a class="nav-link collapsed" href="{{ route('penilaian.index') }}">
+                        <i class="bi bi-circle"></i> <span>Penilaian</span>
+                    </a>
+                </li>
+                
             </ul>
         </li><!-- End PKL Nav -->
 
@@ -101,6 +107,11 @@
                     <li>
                         <a class="nav-link collapsed" href="{{ route('master.quesioner') }}">
                             <i class="bi bi-circle"></i> <span>Quisioner</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link collapsed" href="{{ route('template-penilaian.index') }}">
+                            <i class="bi bi-circle"></i> <span>Template Penilaian</span>
                         </a>
                     </li>
                 </ul>

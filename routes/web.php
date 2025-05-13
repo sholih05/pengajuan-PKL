@@ -11,15 +11,18 @@ use App\Http\Controllers\Admin\KendalaSaranController;
 use App\Http\Controllers\Admin\KetersediaanController;
 use App\Http\Controllers\Admin\NilaiQuisionerController;
 use App\Http\Controllers\Admin\PenempatanController;
+use App\Http\Controllers\Admin\PenilaianController;
 use App\Http\Controllers\Admin\PresensiController;
 use App\Http\Controllers\Admin\QuesionerController;
 use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\TahunAkademikController;
+use App\Http\Controllers\Admin\TemplatePenilaianController;
 use App\Http\Controllers\Dudi\ProfilDudiController;
 use App\Http\Controllers\Guru\ProfilGuruController;
 use App\Http\Controllers\Instruktur\ProfilInstrukturController;
 use App\Http\Controllers\Siswa\ProfilSiswaController;
 use App\Http\Controllers\Siswa\PengajuanSuratController;
+
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Artisan;
 
@@ -87,6 +90,32 @@ Route::group(['middleware' => ['auth']], function () {
         Route::put('pengajuan/{id}', [PengajuanSuratController::class, 'update'])->name('pengajuan.update');
         Route::delete('pengajuan/{id}', [PengajuanSuratController::class, 'destroy'])->name('pengajuan.destroy');
     });
+
+    // Penilaian
+    Route::group(['middleware' => [RoleMiddleware::class . ':1,2']], function () {
+        Route::resource('template-penilaian', TemplatePenilaianController::class)->except(['show']);
+        Route::get('template-penilaian/details/{id}', [TemplatePenilaianController::class, 'show'])->name('template-penilaian.details.show');
+        Route::get('template-penilaian/data', [TemplatePenilaianController::class, 'getData'])->name('template-penilaian.data');
+        Route::post('template-penilaian/{id}/apply', [TemplatePenilaianController::class, 'applyTemplate'])->name('template-penilaian.apply');
+        Route::get('template-penilaian/{id}/guru', [TemplatePenilaianController::class, 'getGuruByTemplate'])->name('template-penilaian.getGuru');
+    });
+
+    Route::group(['middleware' => [RoleMiddleware::class . ':1,2']], function () {
+        // Routes untuk penilaian
+        Route::get('penilaian', [PenilaianController::class, 'index'])->name('penilaian.index');
+        Route::get('penilaian/data', [PenilaianController::class, 'getData'])->name('penilaian.data');
+        Route::get('penilaian/create/{id_siswa}', [PenilaianController::class, 'create'])->name('penilaian.create');
+        Route::post('penilaian', [PenilaianController::class, 'store'])->name('penilaian.store');
+        Route::get('penilaian/{id_siswa}', [PenilaianController::class, 'show'])->name('penilaian.show');
+        Route::get('penilaian/{id_siswa}/edit', [PenilaianController::class, 'edit'])->name('penilaian.edit');
+        Route::put('penilaian/{id_siswa}', [PenilaianController::class, 'update'])->name('penilaian.update');
+        Route::delete('penilaian/{id_siswa}', [PenilaianController::class, 'destroy'])->name('penilaian.destroy');
+        Route::get('penilaian/{id_siswa}/print', [PenilaianController::class, 'print'])->name('penilaian.print');
+        Route::get('penilaian/dashboard', [PenilaianController::class, 'dashboard'])->name('penilaian.dashboard');
+    });
+
+
+
     // admin
     Route::middleware([RoleMiddleware::class . ':1,2'])->group(function () {
         Route::get('/pengajuan-surat', [PengajuanSuratController::class, 'index'])->name('pengajuan.surat.index');
