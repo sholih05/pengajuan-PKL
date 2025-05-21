@@ -16,6 +16,20 @@
 @endsection
 
 @section('content')
+<div class="pagetitle">
+    <h1>Buat Penilaian PKL</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">PKL</li>
+            <li class="breadcrumb-item"><a href="{{ route('penilaian.index') }}">Penilaian</a></li>
+            <li class="breadcrumb-item active">Buat Penilaian</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+@endsection
+
+@section('content')
+
 <div class="card">
     <div class="card-body">
         <h5 class="card-title">Data Siswa</h5>
@@ -54,7 +68,7 @@
             </div>
         </div>
 
-        <form action="{{ route('penilaian.update', $siswa->id_siswa) }}" method="POST" id="penilaianForm">
+        <form action="{{ route('penilaian.update', $siswa->nis) }}" method="POST" id="penilaianForm">
             @csrf
             @method('PUT')
             

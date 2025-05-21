@@ -41,4 +41,9 @@ class PrgObsvr extends Model
     {
         return $query->where('is_active', true);
     }
+
+    public function children()
+    {
+        return $this->hasMany(PrgObsvr::class, 'id1', 'id');
+    }
 }

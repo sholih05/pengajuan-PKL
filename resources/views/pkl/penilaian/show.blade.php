@@ -21,10 +21,10 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="card-title">Data Siswa</h5>
             <div>
-                <a href="{{ route('penilaian.edit', $siswa->id_siswa) }}" class="btn btn-warning">
+                <a href="{{ route('penilaian.edit', $siswa->nis) }}" class="btn btn-warning">
                     <i class="bi bi-pencil"></i> Edit Penilaian
                 </a>
-                <a href="{{ route('penilaian.print', $siswa->id_siswa) }}" class="btn btn-primary" target="_blank">
+                <a href="{{ route('penilaian.print', $siswa->nis) }}" class="btn btn-primary" target="_blank">
                     <i class="bi bi-printer"></i> Cetak Penilaian
                 </a>
             </div>
@@ -66,14 +66,6 @@
         </div>
 
         <h5 class="card-title">Hasil Penilaian</h5>
-        <div class="row mb-4">
-            <div class="col-md-12">
-                <div class="alert alert-success">
-                    <h4 class="alert-heading">Nilai Akhir: {{ number_format($nilaiAkhir, 2) }}</h4>
-                    <p>Keterangan: <strong>{{ getNilaiKeterangan($nilaiAkhir) }}</strong></p>
-                </div>
-            </div>
-        </div>
         
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
@@ -87,51 +79,47 @@
                 </thead>
                 <tbody>
                     @php $no = 1; @endphp
-                    @foreach($indikatorUtama as $indikator)
+                    @foreach($mainIndicators as $mainIndicator)
                         <tr class="table-primary">
                             <td>{{ $no++ }}</td>
-                            <td><strong>{{ $indikator->indikator }}</strong></td>
+                            <td><strong>{{ $mainIndicator->indikator }}</strong></td>
                             <td>
                                 @php
-                                    $nilai = $penilaian->where('id_prg_obsvr', $indikator->id)->first();
+                                    $nilai = $penilaianDetails->where('id_prg_obsvr', $mainIndicator->id)->first();
                                 @endphp
                                 
-                                @if($indikator->is_nilai == '1' && $nilai)
-                                    {{ $nilai->nilai }}
+                                @if($nilai)
+                                    {{ number_format($nilai->nilai_instruktur, 2) }}
                                 @else
                                     <span class="badge bg-secondary">Tidak Dinilai</span>
                                 @endif
                             </td>
                             <td>
-                                @if($indikator->is_nilai == '1' && $nilai)
-                                    {{ getNilaiKeterangan($nilai->nilai) }}
+                                @if($nilai)
+                                    {{ getNilaiKeterangan($nilai->nilai_instruktur) }}
                                 @else
                                     -
                                 @endif
                             </td>
                         </tr>
                         
-                        @if($indikator->children->isNotEmpty())
-                            @foreach($indikator->children as $child)
+                        @if($mainIndicator->children && $mainIndicator->children->count() > 0)
+                            @foreach($mainIndicator->children as $child)
                                 <tr>
                                     <td></td>
                                     <td class="ps-4">{{ $child->indikator }}</td>
                                     <td>
-                                        @php
-                                            $nilai = $penilaian->where('id_prg_obsvr', $child->id)->first();
-                                        @endphp
-                                        
-                                        @if($child->is_nilai == '1' && $nilai)
-                                            {{ $nilai->nilai }}
+                                        @if($child->is_nilai == 1)
+                                            <span class="badge bg-success">Ya</span>
                                         @else
-                                            <span class="badge bg-secondary">Tidak Dinilai</span>
+                                            <span class="badge bg-danger">Tidak</span>
                                         @endif
                                     </td>
                                     <td>
-                                        @if($child->is_nilai == '1' && $nilai)
-                                            {{ getNilaiKeterangan($nilai->nilai) }}
+                                        @if($child->is_nilai == 1)
+                                            Tercapai
                                         @else
-                                            -
+                                            Tidak Tercapai
                                         @endif
                                     </td>
                                 </tr>
@@ -161,11 +149,11 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th width="30%">Dinilai Oleh</th>
-                                <td>{{ $penilaian->first()->creator->name ?? 'N/A' }}</td>
+                                <td>{{ $penilaianDetails->first()->creator->name ?? 'N/A' }}</td>
                             </tr>
                             <tr>
                                 <th>Tanggal Penilaian</th>
-                                <td>{{ $penilaian->first() ? date('d-m-Y H:i', strtotime($penilaian->first()->created_at)) : 'N/A' }}</td>
+                                <td>{{ $penilaianDetails->first() ? date('d-m-Y H:i', strtotime($penilaianDetails->first()->created_at)) : 'N/A' }}</td>
                             </tr>
                         </table>
                     </div>

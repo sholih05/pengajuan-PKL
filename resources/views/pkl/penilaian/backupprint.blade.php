@@ -256,24 +256,29 @@
     </thead>
     <tbody style="border-spacing: 0.5px;">
         <tr>
-            <td style="text-align: center;">86 - 100</td>
+            <td style="text-align: center;">85 - 100</td>
             <td style="text-align: center;">A</td>
             <td>Sangat Baik</td>
         </tr>
         <tr>
-            <td style="text-align: center;">71 - 85</td>
+            <td style="text-align: center;">70 - 84</td>
             <td style="text-align: center;">B</td>
             <td>Baik</td>
         </tr>
         <tr>
-            <td style="text-align: center;">56 - 70</td>
+            <td style="text-align: center;">55 - 69</td>
             <td style="text-align: center;">C</td>
-            <td>Cukup Baik</td>
+            <td>Cukup</td>
         </tr>
         <tr>
-            <td style="text-align: center;">0 - 55</td>
+            <td style="text-align: center;">40 - 54</td>
             <td style="text-align: center;">D</td>
-            <td>Perlu Perbaikan</td>
+            <td>Kurang</td>
+        </tr>
+        <tr>
+            <td style="text-align: center;">0 - 39</td>
+            <td style="text-align: center;">E</td>
+            <td>Sangat Kurang</td>
         </tr>
     </tbody>
 </table>
@@ -291,122 +296,6 @@
         </div>
     </div>
     
-    <!-- Page break before the second form -->
-    <div style="page-break-before: always;"></div>
-    
-    <!-- Second form based on the uploaded image -->
-    <div class="second-form">
-        <div class="header" style="margin-bottom: 20px;">
-            <h2>DAFTAR NILAI PRAKTIK KERJA LAPANGAN</h2>
-            <h2>SMK NEGERI 1 SLAWI</h2>
-            <h2>TAHUN PELAJARAN {{ $tahunAkademik->tahun_akademik ?? date('Y') . '/' . (date('Y') + 1) }}</h2>
-        </div>
-        
-        <table style="width: 100%; margin-bottom: 20px;">
-            <tr>
-                <td style="width: 30%;">Nama Peserta Didik</td>
-                <td style="width: 5%;">:</td>
-                <td style="width: 65%; border-bottom: 1px dotted #000;">{{ $siswa->nama }}</td>
-            </tr>
-            <tr>
-                <td>NISN</td>
-                <td>:</td>
-                <td style="border-bottom: 1px dotted #000;">{{ $siswa->nis }}</td>
-            </tr>
-            <tr>
-                <td>Kelas</td>
-                <td>:</td>
-                <td style="border-bottom: 1px dotted #000;">{{ $siswa->kelas ?? '' }}</td>
-            </tr>
-            <tr>
-                <td>Program Keahlian</td>
-                <td>:</td>
-                <td style="border-bottom: 1px dotted #000;">{{ $siswa->jurusan->jurusan ?? 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>Tempat PKL</td>
-                <td>:</td>
-                <td style="border-bottom: 1px dotted #000;">{{ $penempatan->dudi->nama ?? 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>Tanggal PKL</td>
-                <td>:</td>
-                <td style="border-bottom: 1px dotted #000;">
-                    Mulai : {{ $penempatan->tanggal_mulai ?? '........................' }} <br>
-                    Selesai : {{ $penempatan->tanggal_selesai ?? '........................' }}
-                </td>
-            </tr>
-            <tr>
-                <td>Nama Guru Pembimbing</td>
-                <td>:</td>
-                <td style="border-bottom: 1px dotted #000;">{{ $penempatan->guru->nama ?? 'N/A' }}</td>
-            </tr>
-        </table>
-        
-        <table class="nilai-table" style="width: 100%; margin-bottom: 20px;">
-            <thead>
-                <tr>
-                    <th style="width: 5%;">No.</th>
-                    <th style="width: 45%;">Tujuan Pembelajaran</th>
-                    <th style="width: 10%;">Skor</th>
-                    <th style="width: 40%;">Deskripsi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($mainIndicators as $index => $mainIndicator)
-                    <tr>
-                        <td>{{ $loop->iteration }}.</td>
-                        <td>{{ $mainIndicator->indikator }}</td>
-                        <td style="text-align: center;">{{ $mainIndicator->nilai->nilai_instruktur ?? '' }}</td>
-                        <td></td>
-                    </tr>
-                @endforeach
-                <tr>
-                    <td colspan="4" style="font-weight: bold;">Catatan</td>
-                </tr>
-                <tr>
-                    <td colspan="4" style="height: 100px; vertical-align: top; padding: 10px;">{{ $catatanText ?? '' }}</td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <p style="font-style: italic; font-size: 11pt; margin-bottom: 20px;">
-            Ket : Pada kolom deskripsi hanya memindahkan apa yang ada dalam kolom deskripsi pada lembar observasi
-        </p>
-        
-        <table class="nilai-table" style="width: 50%; margin-bottom: 20px;">
-            <thead>
-                <tr>
-                    <th colspan="2">Kehadiran</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="width: 50%;">Sakit</td>
-                    <td style="width: 50%;">: ...................... Hari</td>
-                </tr>
-                <tr>
-                    <td>Ijin</td>
-                    <td>: ...................... Hari</td>
-                </tr>
-                <tr>
-                    <td>Tanpa Keterangan</td>
-                    <td>: ...................... Hari</td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <div class="ttd" style="margin-top: 50px;">
-            <div class=""></div>
-            <div class="ttd-item">
-                <p>........................., {{ date('Y') }}</p>
-                <p>Guru Pembimbing</p>
-                <div class="ttd-space"></div>
-                <p>{{ $penempatan->guru->nama ?? '____________________________' }}</p>
-                <p>NIP. {{ $penempatan->guru->id_guru ?? '' }}</p>
-            </div>
-        </div>
-    </div>
     <script>
         window.onload = function() {
             window.print();

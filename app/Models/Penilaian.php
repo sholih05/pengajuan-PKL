@@ -15,7 +15,7 @@ class Penilaian extends Model
     // public $timestamps = false;
 
     protected $fillable = [
-        'nilai_guru_pembimbing', 'nilai_instruktur', 'waktu_guru_pembimbing', 'waktu_instruktur', 'id', 'id_guru', 'id_instruktur', 'nis', 'is_active', 'created_at', 'created_by', 'updated_at', 'updated_by'
+       'nilai_instruktur', 'waktu_instruktur', 'id','id_instruktur', 'nis', 'id_prg_obsvr', 'is_active', 'created_at', 'created_by', 'updated_at', 'updated_by'
     ];
 
     public function siswa()
@@ -48,7 +48,7 @@ class Penilaian extends Model
         try {
             // Ambil semua penilaian siswa yang aktif
             $penilaian = self::with('prgObsvr')
-                ->where('id_siswa', $id_siswa)
+                ->where('nis', $id_siswa)
                 ->where('is_active', 1)
                 ->get();
             
