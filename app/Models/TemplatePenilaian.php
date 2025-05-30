@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class TemplatePenilaian extends Model
 {
     protected $table = 'template_penilaian';
-    
+
     protected $fillable = [
         'nama_template',
         'jurusan_id',
@@ -22,7 +22,7 @@ class TemplatePenilaian extends Model
         'updated_by',
         'is_active'
     ];
-    
+
     /**
      * Relasi dengan jurusan
      */
@@ -30,7 +30,7 @@ class TemplatePenilaian extends Model
     {
         return $this->belongsTo(Jurusan::class, 'jurusan_id', 'id_jurusan');
     }
-    
+
     /**
      * Relasi dengan item template (indikator)
      */
@@ -38,7 +38,7 @@ class TemplatePenilaian extends Model
     {
         return $this->hasMany(TemplatePenilaianItem::class, 'template_id');
     }
-    
+
     /**
      * Relasi dengan indikator utama saja
      */
@@ -48,15 +48,15 @@ class TemplatePenilaian extends Model
             ->where('is_main', true)
             ->orderBy('urutan');
     }
-    
+
     /**
      * Relasi dengan user yang membuat
      */
     public function creator(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->belongsTo(User::class, 'created_by' , 'id');
     }
-    
+
     /**
      * Relasi dengan user yang mengupdate
      */

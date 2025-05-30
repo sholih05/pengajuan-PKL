@@ -70,6 +70,15 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/downloadExcel', 'downloadExcel')->name('kendala-saran.downloadExcel');
     });
 
+    // PKL Penilaian
+    Route::group(['middleware' => [RoleMiddleware::class . ':1,2,4'], 'prefix' => 'penilaian', 'controller' => PenilaianController::class], function () {
+        Route::get('/', 'index')->name('penilaian.index');
+        Route::post('/data', 'data')->name('penilaian.data');
+        Route::get('/edit/{nis}/{id_ta}', 'edit')->name('penilaian.edit');
+        Route::post('/upsert', 'upsert')->name('penilaian.upsert');
+
+    });
+
     // PKL NilaiQuisioner
     Route::group(['middleware' => [RoleMiddleware::class . ':1,2'], 'prefix' => 'nilai-quesioner', 'controller' => NilaiQuisionerController::class], function () {
         Route::get('/', 'index')->name('nilai-quesioner');
@@ -92,7 +101,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     // Penilaian
-    Route::group(['middleware' => [RoleMiddleware::class . ':1,2']], function () {
+    Route::group(['middleware' => [RoleMiddleware::class . ':1,2,4']], function () {
         Route::resource('template-penilaian', TemplatePenilaianController::class)->except(['show']);
         Route::get('template-penilaian/details/{id}', [TemplatePenilaianController::class, 'show'])->name('template-penilaian.details.show');
         Route::get('template-penilaian/data', [TemplatePenilaianController::class, 'getData'])->name('template-penilaian.data');
@@ -100,7 +109,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('template-penilaian/{id}/guru', [TemplatePenilaianController::class, 'getGuruByTemplate'])->name('template-penilaian.getGuru');
     });
 
-    Route::group(['middleware' => [RoleMiddleware::class . ':1,2']], function () {
+    Route::group(['middleware' => [RoleMiddleware::class . ':1,2,4']], function () {
         // Routes untuk penilaian
         Route::get('penilaian', [PenilaianController::class, 'index'])->name('penilaian.index');
         Route::get('penilaian/data', [PenilaianController::class, 'getData'])->name('penilaian.data');
@@ -126,11 +135,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::delete('/pengajuan-surat/{id}', [PengajuanSuratController::class, 'delete'])->name('pengajuan.surat.delete');
         Route::put('/pengajuan-surat/reject/{id}', [PengajuanSuratController::class, 'reject'])->name('pengajuan.surat.reject');
         Route::put('/pengajuan/surat/approve/{id}', [PengajuanSuratController::class, 'approve'])->name('pengajuan.surat.approve');
-        
+
 
 
     });
-    
+
 
     // siswa
     Route::group(['middleware' => [RoleMiddleware::class . ':1,2'], 'prefix' => 'siswa', 'controller' => SiswaController::class], function () {
@@ -277,6 +286,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/siswa/catatan/update', 'catatan_siswa_update')->name('d.instruktur.siswa.catatan.update');
 
         Route::get('/siswaExcel/{nis}', 'siswaExcel')->name('d.instruktur.siswaExcel');
+
+        Route::post('/quesioner/upsert', 'upsert_quesioner')->name('d.instruktur.quesioner.upsert');
+        Route::get('/quesioner/edit/{id_dudi}/{id_ta}', 'edit_quesioner')->name('d.instruktur.quesioner.edit');
+        Route::get('/penilaian', 'penilaian')->name('d.instruktur.penilaian');
     });
 
     // dudi
@@ -289,6 +302,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/ketersediaan/data', 'data_ketersediaan')->name('d.dudi.ketersediaan.data');
         Route::post('/ketersediaan/upsert', 'upsert_ketersediaan')->name('d.dudi.ketersediaan.upsert');
         Route::get('/ketersediaan/delete/{id}', 'destroy_ketersediaan')->name('d.dudi.ketersediaan.delete');
+
+
+
     });
 });
 

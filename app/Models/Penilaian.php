@@ -35,7 +35,7 @@ class Penilaian extends Model
 
     public function prgObsvr()
     {
-        return $this->belongsTo(PrgObsvr::class, 'id', 'id');
+        return $this->belongsTo(PrgObsvr::class, 'id_prg_obsvr', 'id');
     }
 
     public function scopeActive($query)
@@ -51,14 +51,14 @@ class Penilaian extends Model
                 ->where('nis', $id_siswa)
                 ->where('is_active', 1)
                 ->get();
-            
+
             if ($penilaian->isEmpty()) {
                 return 0;
             }
-            
+
             $totalNilai = 0;
             $jumlahIndikator = 0;
-            
+
             // Hitung total nilai dan jumlah indikator yang dinilai
             foreach ($penilaian as $p) {
                 // Pastikan indikator ini adalah indikator yang dinilai
@@ -67,15 +67,15 @@ class Penilaian extends Model
                     $jumlahIndikator++;
                 }
             }
-            
+
             // Jika tidak ada indikator yang dinilai, kembalikan 0
             if ($jumlahIndikator == 0) {
                 return 0;
             }
-            
+
             // Hitung rata-rata nilai
             $nilaiAkhir = $totalNilai / $jumlahIndikator;
-            
+
             // Bulatkan ke 2 desimal
             return round($nilaiAkhir, 2);
         } catch (\Exception $e) {

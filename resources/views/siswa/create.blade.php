@@ -156,6 +156,17 @@
                             <div class="invalid-feedback">Alamat wajib diisi dan maksimal 225 karakter.</div>
                         </div>
 
+                        <div class="mb-3">
+                            <label for="kelas" class="form-label">Kelas</label>
+                            <select class="form-control" id="kelas" name="kelas" required>
+                                <option value="">Pilih</option>
+                                <option value="X" {{ old('kelas') == 'X' ? 'selected' : '' }}>X</option>
+                                <option value="XI" {{ old('kelas') == 'XI' ? 'selected' : '' }}>XI</option>
+                                <option value="XII" {{ old('kelas') == 'XII' ? 'selected' : '' }}>XII</option>
+                            </select>
+                            <div class="invalid-feedback">Kelas wajib dipilih.</div>
+                        </div>
+
                         <button type="button" class="btn btn-secondary" onclick="prevStep(1)">Previous</button>
                         <button type="button" class="btn btn-primary" onclick="validateStep(2)">Next</button>
                     </div>

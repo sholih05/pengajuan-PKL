@@ -104,6 +104,14 @@
 
                             <li class="nav-item">
                                 <button class="nav-link" data-bs-toggle="tab"
+                                    data-bs-target="#profile-penilaian">Penilaian</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab"
+                                    data-bs-target="#profile-quesioner">Quesioner</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab"
                                     data-bs-target="#profile-kendala-saran">Kendala & Saran</button>
                             </li>
                             <li class="nav-item">
@@ -128,6 +136,37 @@
                                     </thead>
                                 </table>
                             </div>
+                        </div>
+
+                        <!-- Data Quest Tab -->
+                        <div class="tab-pane fade profile-quesioner" id="profile-quesioner">
+                            <form id="questionForm" class="row g-3 needs-validation" novalidate>
+                                @csrf
+                                <input type="hidden" id="stt" name="stt" value="0">
+                                <input type="hidden" id="nis" name="nis" value="{{ $instruktur->id_instruktur }}">
+                                <div class="mb-3">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Quesioner</th>
+                                                <th>Ya</th>
+                                                <th>Tidak</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="quesioner-table">
+                                        </tbody>
+                                    </table>
+                                    <div id="spinner" style="display: none; text-align: center; margin-top: 20px;">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="invalid-feedback"> Harap jawab semua pertanyaan. </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </form>
                         </div>
 
                         <!-- Data Absensi Tab -->
@@ -199,6 +238,22 @@
                             </div>
 
                             @if (session('id_instruktur') == $instruktur->id_instruktur || in_array(auth()->user()->role, [1, 2]))
+                            <!-- Penilaian Tab -->
+                            <div class="tab-pane fade profile-penilaian" id="profile-penilaian">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-sm" id="table-penilaian" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>NIS</th>
+                                                <th>Siswa</th>
+                                                <th>Jurusan</th>
+                                                <th>Penilaian</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+
                             <!-- Change Password Tab -->
                             <div class="tab-pane fade pt-3" id="profile-change-password">
                                 <!-- Change Password Form -->
@@ -466,12 +521,43 @@
                     @endif
                 ]
             });
+            var table5 = $('#table-penilaian').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '{!! route('d.instruktur.penilaian') !!}',
+                    type: 'GET',
+                    data: function(d) {
+                        d.id = '{{ $instruktur->id_instruktur }}';
+                        d.id_ta = $('#id_ta').val();
+                    }
+                },
+                columns: [
+                    {
+                        data: 'nis',
+                        name: 'nis'
+                    },
+                {
+                    data: 'nama_siswa',
+                    name: 'nama_siswa'
+                },
+                {
+                    data: 'jurusan',
+                    name: 'jurusan'
+                },
+                {
+                    data: 'penilaian',
+                    name: 'penilaian'
+                }
+            ]
+        });
 
             $('#id_ta').on('change', function() {
                 table1.ajax.reload();
                 table2.ajax.reload();
                 table3.ajax.reload();
                 table4.ajax.reload();
+                table5.ajax.reload();
             });
             @if (session('id_instruktur') == $instruktur->id_instruktur || in_array(auth()->user()->role, [1, 2]))
 
@@ -613,9 +699,11 @@
         });
     </script>
 
-    @if (session('id_instruktur') == $instruktur->id_instruktur || in_array(auth()->user()->role, [1, 2]))
+    @if (session('id_instruktur') == $instruktur->id_instruktur || in_array(auth()->user()->role, [1, 2, 4]))
         <script>
             $(document).ready(function() {
+                getQuestion();
+
                 // Handle password change submission
                 $('#changePasswordForm').on('submit', function(e) {
                     e.preventDefault();
@@ -667,8 +755,136 @@
                         }
                     });
                 });
+
+
+                $('#questionForm').on('submit', function(e) {
+                    e.preventDefault();
+                    var form = $(this)[0];
+                    if (form.checkValidity() === false) {
+                        e.stopPropagation();
+                    } else {
+                        var url = "{{ route('d.siswa.quesioner.upsert') }}";
+                        var formData = $(this).serialize();
+
+                        $.ajax({
+                            url: url,
+                            method: "POST",
+                            data: formData,
+                            success: function(response) {
+                                getNilaiQuestion();
+                                if (response.status) {
+                                    Toast.fire({
+                                        icon: "success",
+                                        title: response.message
+                                    });
+                                } else {
+                                    Toast.fire({
+                                        icon: "error",
+                                        title: response.message
+                                    });
+                                }
+                            },
+                            error: function(response) {
+                                Toast.fire({
+                                    icon: "error",
+                                    title: 'Woops! Fatal Error.'
+                                });
+                            }
+                        });
+                    }
+                });
             });
         </script>
+
+
+<script>
+    function getQuestion() {
+        // Tampilkan spinner sebelum memulai AJAX
+        $('#spinner').show();
+
+        // Load data dengan AJAX
+        $.ajax({
+            url: "{{ route('d.siswa.quesioner') }}", // Endpoint backend
+            type: "GET",
+            data: {
+                id_ta: $('#id_ta').val(),
+            },
+            success: function(response) {
+                // Sembunyikan spinner setelah data berhasil dimuat
+                $('#spinner').hide();
+
+                if (response.status === 'success') {
+                    const questions = response.data;
+                    const tableBody = $('#quesioner-table');
+                    tableBody.empty();
+                    // Render data ke tabel
+                    questions.forEach(question => {
+                        const row = `
+                        <tr>
+                            <td>
+                                ${question.soal}
+                                <input type="hidden" name="id_nilai[${question.id_quesioner}]" value="">
+                            </td>
+                            <td>
+                                <input type="radio" name="quesioner[${question.id_quesioner}]" value="1" required>
+                            </td>
+                            <td>
+                                <input type="radio" name="quesioner[${question.id_quesioner}]" value="0">
+                            </td>
+                        </tr>
+                    `;
+                        tableBody.append(row);
+                    });
+                    getNilaiQuestion();
+                } else {
+                    Toast.fire({
+                        icon: "error",
+                        title: response.message
+                    });
+                }
+            },
+            error: function() {
+                // Sembunyikan spinner jika terjadi error
+                $('#spinner').hide();
+                alert('Gagal memuat data pertanyaan.');
+            }
+        });
+    }
+
+
+    function getNilaiQuestion() {
+        var nis = '{{ $instruktur->id_instruktur }}';
+        var id_ta = $('#id_ta').val();
+
+        $.ajax({
+            url: "{{ url('d/siswa/quesioner/edit') }}/" + nis + "/" + id_ta,
+            method: 'GET',
+            success: function(response) {
+                if (response.status === 'success') {
+                    var data = response.data;
+
+                    $('#stt').val('1');
+                    $('#id_nilai').val(data.id_nilai);
+                    // Clear previous selections for radio buttons
+                    $('input[name^="quesioner"]').prop('checked', false);
+
+                    // Set quesioner values based on response
+                    data.quesioner.forEach(function(question) {
+                        $(`input[name="quesioner[${question.id_quesioner}]"][value="${question.nilai}"]`)
+                            .prop('checked', true);
+                        $(`input[name="id_nilai[${question.id_quesioner}]"]`).val(question
+                            .id_nilai);
+                    });
+                } else {
+                    $('#stt').val('0');
+                }
+            },
+            // error: function() {
+            //     alert('Terjadi kesalahan.');
+            // }
+        });
+    }
+</script>
 
     @endif
 @endsection
