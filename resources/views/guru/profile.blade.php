@@ -101,6 +101,10 @@
                                 data-bs-target="#profile-absensi">Kehadiran</button>
                         </li>
                         <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab"
+                                data-bs-target="#detail-surat">Detail Surat</button>
+                        </li>
+                        <li class="nav-item">
                             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-catatan">Catatan
                                 Kegiatan</button>
                         </li>
@@ -129,7 +133,38 @@
                                 </table>
                             </div>
                         </div>
+                        <!-- detail surat -->
+                        <div class="tab-pane fade profile-absensi" id="detail-surat">
 
+                            <div class="table-responsive">
+                                <table class="table table-striped table-sm" id="detail-surat" width="100%">
+                                    <thead>
+                                        <th>number</th>
+                                        <th>file_name </th>
+                                        <th>Nis </th>
+                                        <th>uploaded_at</th>                           
+                                      </t>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($files as $index => $file)
+                                            <tr>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ $file->file_name }}</td>
+                                                <td>{{ $file->siswa_id ?? 'Tidak Diketahui' }}</td>
+                                                <td>{{ $file->uploaded_at }}</td>
+                                                <td>
+                                                    <a href="#" class="btn btn-success btn-sm">
+                                                        <i class="bi bi-download"></i> Unduh
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                       
                         <!-- Data Absensi Tab -->
                         <div class="tab-pane fade profile-absensi" id="profile-absensi">
 

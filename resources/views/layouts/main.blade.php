@@ -12,7 +12,9 @@
 
     <!-- Favicons -->
     <link href="{{ asset('assets') }}/img/SMK_KARBAK.png" rel="icon">
-    <link href="{{ asset('assets') }}/img/SMK_KARBAK.png" rel="smk-icon">
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/SMK_KARBAK.png') }}">
+
+
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">

@@ -129,7 +129,7 @@
                             <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
                             <img id="preview" src="{{ $siswa->foto ? asset('storage/' . $siswa->foto) : '' }}" alt="Preview Foto"
                                  style="{{ $siswa->foto ? '' : 'display:none;' }} margin-top: 10px; max-width: 200px; height: auto;">
-                                 
+
                         </div>
 
                         <!-- Step Navigation Buttons -->
@@ -157,6 +157,17 @@
                             <label for="alamat" class="form-label">Alamat</label>
                             <textarea class="form-control" id="alamat" name="alamat" rows="3" required maxlength="225">{{ old('alamat', $siswa->alamat) }}</textarea>
                             <div class="invalid-feedback">Alamat wajib diisi dan maksimal 225 karakter.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="kelas" class="form-label">Kelas</label>
+                            <select class="form-control" id="kelas" name="kelas" required>
+                                <option value="">Pilih</option>
+                                <option value="X" {{ old('kelas', $siswa->kelas) == 'X' ? 'selected' : '' }}>X</option>
+                                <option value="XI" {{ old('kelas', $siswa->kelas) == 'XI' ? 'selected' : '' }}>XI</option>
+                                <option value="XII" {{ old('kelas', $siswa->kelas) == 'XII' ? 'selected' : '' }}>XII</option>
+                            </select>
+                            <div class="invalid-feedback">Kelas wajib dipilih.</div>
                         </div>
 
                         <!-- Step Navigation Buttons -->

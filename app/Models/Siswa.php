@@ -26,6 +26,7 @@ class Siswa extends Model
         'no_kontak',
         'email',
         'alamat',
+        'kelas',
         'id_jurusan',
         'id_user',
         'nama_wali',

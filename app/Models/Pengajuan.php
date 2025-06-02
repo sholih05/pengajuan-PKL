@@ -17,6 +17,9 @@ class Pengajuan extends Model
         'perusahaan_tujuan',
         'tanggal_pengajuan',
         'status',
+        'tanggal_mulai',
+        'tanggal_selesai',
+        'kepada_yth',
     ];
 
     // protected $table = 'pengajuan_surat'; 

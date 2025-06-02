@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Siswa\FileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
@@ -11,17 +12,24 @@ use App\Http\Controllers\Admin\KendalaSaranController;
 use App\Http\Controllers\Admin\KetersediaanController;
 use App\Http\Controllers\Admin\NilaiQuisionerController;
 use App\Http\Controllers\Admin\PenempatanController;
+use App\Http\Controllers\Admin\PenilaianController;
 use App\Http\Controllers\Admin\PresensiController;
 use App\Http\Controllers\Admin\QuesionerController;
 use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\TahunAkademikController;
+use App\Http\Controllers\Admin\TemplatePenilaianController;
 use App\Http\Controllers\Dudi\ProfilDudiController;
 use App\Http\Controllers\Guru\ProfilGuruController;
 use App\Http\Controllers\Instruktur\ProfilInstrukturController;
+use App\Http\Controllers\Siswa\LihatFileController;
 use App\Http\Controllers\Siswa\ProfilSiswaController;
 use App\Http\Controllers\Siswa\PengajuanSuratController;
+use App\Http\Controllers\Siswa\SuratController;
 use App\Http\Middleware\RoleMiddleware;
+use Faker\Core\File;
 use Illuminate\Support\Facades\Artisan;
+use PHPUnit\TextUI\Configuration\FileCollection;
+
 
 // Rute untuk login dan autentikasi
 Route::get('/', [AuthController::class, 'index']);
@@ -79,6 +87,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     //pengajuan surat
     Route::group(['middleware' => [RoleMiddleware::class . ':1,5'], 'prefix' => 'siswa', 'controller' => SiswaController::class], function () {
+        Route::get('/search/siswa', 'search')->name('siswa.searchh');
         Route::get('pengajuan', [PengajuanSuratController::class, 'index'])->name('pengajuan.index');
         Route::get('pengajuan/create', [PengajuanSuratController::class, 'create'])->name('pengajuan.create');
         Route::post('/pengajuan-surat/store', [PengajuanSuratController::class, 'store'])->name('pengajuan.surat.store');
@@ -86,7 +95,34 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('pengajuan/{id}/edit', [PengajuanSuratController::class, 'edit'])->name('pengajuan.edit');
         Route::put('pengajuan/{id}', [PengajuanSuratController::class, 'update'])->name('pengajuan.update');
         Route::delete('pengajuan/{id}', [PengajuanSuratController::class, 'destroy'])->name('pengajuan.destroy');
+       
+
     });
+
+     // Penilaian
+     Route::group(['middleware' => [RoleMiddleware::class . ':1,2']], function () {
+        Route::resource('template-penilaian', TemplatePenilaianController::class)->except(['show']);
+        Route::get('template-penilaian/details/{id}', [TemplatePenilaianController::class, 'show'])->name('template-penilaian.details.show');
+        Route::get('template-penilaian/data', [TemplatePenilaianController::class, 'getData'])->name('template-penilaian.data');
+        Route::post('template-penilaian/{id}/apply', [TemplatePenilaianController::class, 'applyTemplate'])->name('template-penilaian.apply');
+        Route::get('template-penilaian/{id}/guru', [TemplatePenilaianController::class, 'getGuruByTemplate'])->name('template-penilaian.getGuru');
+    });
+
+    Route::group(['middleware' => [RoleMiddleware::class . ':1,2']], function () {
+        // Routes untuk penilaian
+        Route::get('penilaian', [PenilaianController::class, 'index'])->name('penilaian.index');
+        Route::get('penilaian/data', [PenilaianController::class, 'getData'])->name('penilaian.data');
+        Route::get('penilaian/create/{id_siswa}', [PenilaianController::class, 'create'])->name('penilaian.create');
+        Route::post('penilaian', [PenilaianController::class, 'store'])->name('penilaian.store');
+        Route::get('penilaian/{id_siswa}', [PenilaianController::class, 'show'])->name('penilaian.show');
+        Route::get('penilaian/{id_siswa}/edit', [PenilaianController::class, 'edit'])->name('penilaian.edit');
+        Route::put('penilaian/{id_siswa}', [PenilaianController::class, 'update'])->name('penilaian.update');
+        Route::delete('penilaian/{id_siswa}', [PenilaianController::class, 'destroy'])->name('penilaian.destroy');
+        Route::get('penilaian/{id_siswa}/print', [PenilaianController::class, 'print'])->name('penilaian.print');
+        Route::get('penilaian/dashboard', [PenilaianController::class, 'dashboard'])->name('penilaian.dashboard');
+    });
+
+    
     // admin
     Route::middleware([RoleMiddleware::class . ':1,2'])->group(function () {
         Route::get('/pengajuan-surat', [PengajuanSuratController::class, 'index'])->name('pengajuan.surat.index');
@@ -276,3 +312,34 @@ Route::get('/clear-cache', function () {
 Route::get('/tampilan', function () {
     return view('pkl.pengajuan-surat.surat');
 });
+
+Route::get('/surat/{id}', [SuratController::class, 'index'])->name('surat.index');
+Route::get('/pengajuan/surat/details/{id}', [PengajuanSuratController::class, 'details'])->name('pengajuan.surat.details');
+
+// upload file
+
+
+// Route::prefix('d/uploaded_files')->group(function () {
+//     Route::get('uploaded-files', [FileController::class, 'index'])->name('d.upload-surat');
+//     Route::post('upload', [FileController::class, 'upload'])->name('d.upload');
+//     Route::put('update/{id}', [FileController::class, 'update'])->name('d.update'); // Ubah menjadi PUT
+//     Route::get('delete/{id}', [FileController::class, 'delete'])->name('d.delete');
+//     Route::get('edit/{id}', [FileController::class, 'edit'])->name('d.edit');
+// });
+
+Route::prefix('d/uploaded_files')->group(function () {
+    Route::get('uploaded-files', [FileController::class, 'index'])->name('d.upload-surat');
+    Route::post('upload', [FileController::class, 'upload'])->name('d.upload');
+    Route::put('update/{id}', [FileController::class, 'update'])->name('d.update');
+    Route::get('delete/{id}', [FileController::class, 'delete'])->name('d.delete');
+    Route::get('edit/{id}', [FileController::class, 'edit'])->name('d.edit');
+
+    Route::get('guru/files', [LihatFileController::class, 'index'])->name('admin.files');
+    Route::get('guru/files/{id}/download', [LihatFileController::class, 'download'])->name('admin.download');
+    Route::get('guru/files/{id}/details', [LihatFileController::class, 'viewDetails'])->name('admin.viewDetails');
+    
+});
+
+
+
+

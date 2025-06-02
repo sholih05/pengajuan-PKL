@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\NilaiQuisionerController;
 use App\Http\Controllers\Controller;
 use App\Models\Catatan;
 use App\Models\Instruktur;
+use App\Models\Penilaian;
 use App\Models\Penempatan;
 use App\Models\Presensi;
 use App\Models\Quesioner;
@@ -264,5 +265,84 @@ class ProfilInstrukturController extends Controller
             Catatan::create($data); // Insert data baru
             return response()->json(['status' => true, 'message' => 'Catatan berhasil disimpan']);
         }
+    }
+
+    function upsert_quesioner(Request $request)
+    {
+        $id_instruktur = $request->has('id_instruktur') ? $request->id_instruktur : session('id_instruktur');
+
+        // Menambahkan parameter tambahan ke Request yang sudah ada
+        $request->merge([
+            'tanggal' => date('Y-m-d'),
+            'id_instruktur' => $id_instruktur,
+        ]);
+        $nilaiQuisionerController = new NilaiQuisionerController();
+
+        // Panggil metode upsert
+        return $nilaiQuisionerController->upsert($request);
+    }
+
+    function edit_quesioner(Request $request)
+    {
+        $nilaiQuisionerController = new NilaiQuisionerController();
+        // Panggil metode upsert
+        return $nilaiQuisionerController->edit($request);
+    }
+
+    function penilaian(Request $request)
+    {
+        // Tentukan ID guru
+        $id_instruktur = $request->id;
+        if (Auth::user()->role == 4) {
+            $id_instruktur = session('id_instruktur'); // Pastikan sesi ini sudah diatur saat login guru
+        }
+        // Mengambil data siswa berdasarkan id_guru
+        $data = Penempatan::where('id_instruktur', $id_instruktur)
+            ->where('id_ta', $request->id_ta)
+            ->where('is_active', true) // Filter untuk penempatan yang aktif, jika dibutuhkan
+            ->with('siswa','guru') // Memuat relasi siswa
+            ->get()
+            // ->pluck('siswa') // Mengambil hanya data siswa dari hasil query
+            ->filter();
+
+        return DataTables::of($data)
+            ->addIndexColumn() // Menambahkan nomor row
+            ->addColumn('nis', function ($dt) {
+                return $dt->siswa->nis;
+            })
+            ->addColumn('nama_siswa', function ($dt) {
+                return '<a href="' . url("/d/siswa?nis=" . $dt->siswa->nis) . '">' . $dt->siswa->nama . '</a>';
+            })
+            ->addColumn('jurusan', function ($dt) {
+                return $dt->siswa->jurusan->jurusan ?? '-';
+            })
+            ->addColumn('penilaian', function ($dt) {
+                $penilaian = Penilaian::where('nis', $dt->siswa->nis)
+                    ->where('is_active', 1)
+                    ->first();
+                if ($penilaian) {
+                return '
+                    <a href="' . route('penilaian.show', $dt->siswa->nis) . '" class="btn btn-info btn-sm">
+                        <i class="bi bi-eye"></i> Detail
+                    </a>
+                    <a href="' . route('penilaian.edit', $dt->siswa->nis) . '" class="btn btn-warning btn-sm">
+                        <i class="bi bi-pencil"></i> Edit
+                    </a>
+                    <a href="' . route('penilaian.print', $dt->siswa->nis) . '" class="btn btn-secondary btn-sm" target="_blank">
+                        <i class="bi bi-printer"></i> Cetak
+                    </a>
+                ';
+                } else {
+                    return '
+                        <a href="' . route('penilaian.create', $dt->siswa->nis) . '" class="btn btn-primary btn-sm">
+                            <i class="bi bi-pencil-square"></i> Nilai
+                        </a>
+                    ';
+                }
+            })
+
+            ->rawColumns(['nama_siswa', 'penilaian'])
+            ->make(true);
+
     }
 }

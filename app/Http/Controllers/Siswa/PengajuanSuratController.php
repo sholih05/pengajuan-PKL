@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use App\Models\Pengajuan;
+use App\Models\PengajuanDetail;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -22,27 +23,36 @@ class PengajuanSuratController extends Controller
     $validator = Validator::make($request->all(), [
         'namaSiswa' => 'required|array|min:4', // Pastikan namaSiswa adalah array dengan minimal 4 item
         'namaSiswa.*' => 'required|string|max:255', // Validasi setiap elemen array
-        'jurusan' => 'required|string|max:255',
         'perusahaan_tujuan' => 'required|string|max:255',
         'tanggal_pengajuan' => 'required|date',
+        'tanggal_mulai' => 'required|date',
+        'tanggal_selesai' => 'required|date',
+        'kepada_yth' => 'required|string|max:100',
     ]);
 
     if ($validator->fails()) {
         return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
     }
 
+    $pengajuan =Pengajuan::create([
+        // 'jurusan' => Siswa::where('nis', $nama)->first()->jurusan->jurusan,
+        'perusahaan_tujuan' => $request->perusahaan_tujuan,
+        'tanggal_pengajuan' => $request->tanggal_pengajuan,
+        'tanggal_mulai' => $request->tanggal_mulai,
+        'tanggal_selesai' => $request->tanggal_selesai,
+        'kepada_yth' => $request->kepada_yth,
+        'status' => 'Pending',
+    ]);
 
 
     // Simpan data
     foreach ($request->namaSiswa as $nama) {
-        Pengajuan::create([
+       PengajuanDetail::create([
+            'id_surat' => $pengajuan->id,
             'nim' => $nama,
-            'jurusan' => $request->jurusan,
-            'perusahaan_tujuan' => $request->perusahaan_tujuan,
-            'tanggal_pengajuan' => $request->tanggal_pengajuan,
-            'status' => 'Pending',
-        ]);
-    }
+            'jurusan' => Siswa::where('nis', $nama)->first()->jurusan->jurusan
+       ]);
+    };
 
     return response()->json(['status' => 'success', 'message' => 'Pengajuan berhasil disimpan.']);
 }
@@ -69,7 +79,7 @@ public function search(Request $request)
     {
         if ($request->ajax()) {
             $siswa = Siswa::where('nis', Auth::user()->username)->first();
-            $pengajuanSurat = Pengajuan::where('nim', Auth::user()->username)->orderByDesc('id')->get(); // Ambil data dari model
+            $pengajuanSurat = PengajuanDetail::where('nim', Auth::user()->username)->orderByDesc('id')->get(); // Ambil data dari model
             return DataTables::of($pengajuanSurat)
                 ->addIndexColumn() // Tambahkan nomor urut
                 ->editColumn('status', function ($row) {
@@ -84,10 +94,38 @@ public function search(Request $request)
                 ->addColumn('namasiswa', function ($row) {
                     return optional(Siswa::where('nis', $row->nim)->first())->nama;
                 })
+                ->editColumn('perusahaan_tujuan', function ($row) {
+                    return Pengajuan::where('id', $row->id_surat)->first()->perusahaan_tujuan;
+                })
+                ->editColumn('tanggal_pengajuan', function ($row) {
+                    return Pengajuan::where('id', $row->id_surat)->first()->tanggal_pengajuan;
+                })
+                ->editColumn('tanggal_mulai', function ($row) {
+                    return Pengajuan::where('id', $row->id_surat)->first()->tanggal_mulai;
+                })
+                ->editColumn('tanggal_selesai', function ($row) {
+                    return Pengajuan::where('id', $row->id_surat)->first()->tanggal_selesai;
+                })
+                ->editColumn('kepada_yth', function ($row) {
+                    return Pengajuan::where('id', $row->id_surat)->first()->kepada_yth;
+                })
+                ->editColumn('status', function ($row) {
+                    $status = Pengajuan::where('id', $row->id_surat)->first()->status;
+                    $statusText = $status === 'Approved' ? 'Disetujui' : $status;
+                
+                    // Tambahkan elemen span dengan kelas khusus
+                    if ($statusText === 'Disetujui') {
+                        return '<span style="background-color: green; color: white; padding: 2px; border-radius: 5px; ">' . $statusText . '</span>';
+                    }
+                
+                    return $statusText;
+                })->rawColumns(['status']) // Jangan lupa tambahkan ini jika menggunakan HTML
+                
                 ->addColumn('aksi', function ($row) {
-                    if ($row->status === 'Approved') {
+                    $pengajuan = Pengajuan::where('id', $row->id_surat)->first();
+                    if ($pengajuan->status === 'Approved') {
                         return '
-                            <button class="btn btn-sm btn-success edit-btn" data-id="' . $row->id . '">Download</button>
+                            <a class="btn btn-sm btn-success" href="/surat/' . $row->id_surat . '">Download</a>
                         ';
                     } else {
                         return '';
@@ -108,6 +146,9 @@ public function search(Request $request)
             'perusahaan_tujuan' => 'required|string|max:255',
             'tanggal_pengajuan' => 'required|date',
             'status' => 'required|string|in:Pending,Disetujui,Ditolak',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesao' => 'required|date',
+            'kepada_yth' => 'required|string|max:100',
             'aksi' => 'nullable|string',
         ]);
 
@@ -149,6 +190,7 @@ public function search(Request $request)
             ->addColumn('aksi', function ($row) {
                 return '
                 <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-sm btn-danger detail-btn" data-id="' . $row->id . '">Detail</button>
                     <div class="btn-group">
                         <button class="btn btn-sm btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Action
@@ -156,6 +198,7 @@ public function search(Request $request)
                         <ul class="dropdown-menu">
                             <li><button class="dropdown-item approve-btn" data-id="' . $row->id . '">Disetujui</button></li>
                             <li><button class="dropdown-item reject-btn" data-id="' . $row->id . '">Ditolak</button></li>
+                            <li><a class="dropdown-item" href="/surat/' . $row->id . '">Lihat</a></li>
                         </ul>
                     </div>
                     <button class="btn btn-sm btn-danger delete-btn" data-id="' . $row->id . '">Hapus</button>
@@ -202,6 +245,27 @@ public function approve($id)
         'surat' => $surat,
     ]);
 }
+
+// detail siswa
+public function details($id)
+{
+    $pengajuan = PengajuanDetail::where('id_surat', $id)->with('siswa')->get();
+
+    $siswa = $pengajuan->map(function ($item) {
+        return [
+            'nim' => $item->siswa->nis ?? null,
+            'nama' => $item->siswa->nama ?? 'Tidak Ditemukan',
+            'kelas' => $item->siswa->kelas ?? 'Tidak Ditemukan',
+            'jurusan' => $item->jurusan ?? 'Tidak Ditemukan',
+        ];
+    });
+
+    return response()->json([
+        'siswa' => $siswa
+    ]);
+}
+
+
 
 
 

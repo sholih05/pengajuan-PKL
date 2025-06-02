@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Guru;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Instruktur\ProfilInstrukturController;
+use App\Models\FileModel;
 use App\Models\Guru;
 use App\Models\Penempatan;
 use App\Models\Presensi;
@@ -44,9 +45,10 @@ class ProfilGuruController extends Controller
             ->firstOrFail();
         // Kelompokkan penempatan berdasarkan id_instruktur di level collection
         $penempatanGrouped = $guru->penempatan->groupBy('id_instruktur');
+        $files = FileModel::all();
 
         $ta = ThnAkademik::where('is_active', true)->orderBy('id_ta', 'desc')->get();
-        return view('guru.profile', compact('guru', 'activeAcademicYear', 'penempatanGrouped', 'ta'));
+        return view('guru.profile', compact('guru', 'activeAcademicYear', 'penempatanGrouped', 'ta','files'));
     }
 
     public function data_siswa(Request $request)

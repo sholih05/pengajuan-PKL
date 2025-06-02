@@ -16,12 +16,14 @@
         <table class="table table-striped table-sm" id="pengajuan-surat" width="100%">
             <thead>
                 <tr>
-                    <th>No</th>
-                    <th>Nama Siswa</th>
-                    <th>Jurusan</th>
+                    <th>No</th>                   
                     <th>Perusahaan Tujuan</th>
                     <th>Tanggal Pengajuan</th>
                     <th>Status</th>
+                    <th>Tgl Mulai</th>
+                    <th>Tgl Selai</th>
+                    <th>Kepada Yth</th>
+                    <th>Detail</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -50,16 +52,24 @@
                     </div>
                     @endfor
                     <div class="mb-3">
-                        <label for="jurusan" class="form-label">Jurusan</label>
-                        <input type="text" class="form-control" id="jurusan" name="jurusan" required>
-                    </div>
-                    <div class="mb-3">
                         <label for="perusahaan" class="form-label">Perusahaan Tujuan</label>
                         <input type="text" class="form-control" id="perusahaan" name="perusahaan_tujuan" required>
                     </div> 
                     <div class="mb-3">
                         <label for="tanggalPengajuan" class="form-label">Tanggal Pengajuan</label>
                         <input type="date" class="form-control" id="tanggalPengajuan" name="tanggal_pengajuan" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tanggalMulai" class="form-label">Tanggal Mulai</label>
+                        <input type="date" class="form-control" id="tanggalMulai" name="tanggal_mulai" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tanggalSelesai" class="form-label">Tanggal Selesai</label>
+                        <input type="date" class="form-control" id="tanggalSelesai" name="tanggal_selesai" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="kepadaYth" class="form-label">Kepada Yth</label>
+                        <input type="text" class="form-control" id="kepada_yth" name="kepada_yth" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Simpan</button>
                 </form>
@@ -68,6 +78,24 @@
     </div>
 </div>
 @endsection
+
+<!-- Modal Detail Siswa -->
+<div class="modal fade" id="suratModal" tabindex="-1" aria-labelledby="suratModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="suratModalLabel">Detail Pengajuan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="suratModalBody">
+                <!-- Tabel data siswa akan dimuat di sini -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 <!-- buton modal ditolak/distujui -->
 <section>
@@ -107,7 +135,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary">Cetak Surat</button>
             </div>
         </div>
     </div>
@@ -195,6 +222,55 @@
                             });
                         });
                         </script>
+
+<!-- detail siswa -->
+<script>
+ $(document).on('click', '.detail-btn', function() {
+    var id = $(this).data('id');
+    $.ajax({
+        url: "/pengajuan/surat/details/" + id,
+        method: "GET",
+        success: function(response) {
+            var tableRows = response.siswa.map(function(siswa, index) {
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${siswa.nim}</td>
+                        <td>${siswa.nama}</td>
+                        <td>${siswa.kelas}</td>
+                        <td>${siswa.jurusan}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            $('#suratModalBody').html(`
+                <h5>Daftar Siswa</h5>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>NIM</th>
+                            <th>Nama</th>
+                            <th>Kelas</th>
+                            <th>Jurusan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+            `);
+            $('#suratModal').modal('show');
+        },
+        error: function() {
+            alert('Terjadi kesalahan saat memuat data.');
+        }
+    });
+});
+
+
+</script>
+
 <!-- pembuatan surat -->
 <script>
     $(document).on('click', '.approve-btn', function() {
@@ -217,6 +293,9 @@
                 <p><strong>Jurusan:</strong> ${response.surat.jurusan}</p>
                 <p><strong>Perusahaan Tujuan:</strong> ${response.surat.perusahaan_tujuan}</p>
                 <p><strong>Tanggal Pengajuan:</strong> ${response.surat.tanggal_pengajuan}</p>
+                <p><strong>Tanggal Mulai:</strong> ${response.surat.Tanggal_Mulai}</p>
+                <p><strong>Tanggal Selesai:</strong> ${response.surat.Tanggal_Selesai}</p>
+                <p><strong>Kepada Yth:</strong> ${response.surat.Kepada_Yth}</p>
             `);
             $('#suratModal').modal('show');
         },
@@ -235,11 +314,12 @@
             ajax: "{{ route('pengajuan.surat.getAll') }}",
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                { data: 'namasiswa', name: 'namasiswa' },
-                { data: 'jurusan', name: 'jurusan' },
                 { data: 'perusahaan_tujuan', name: 'perusahaan_tujuan' },
                 { data: 'tanggal_pengajuan', name: 'tanggal_pengajuan' },
                 { data: 'status', name: 'status' },
+                { data: 'tanggal_mulai', name: 'tanggal_mulai' },
+                { data: 'tanggal_selesai', name: 'tanggal_selesai' },
+                { data: 'kepada_yth', name: 'kepada_yth' },
                 { data: 'aksi', name: 'aksi', orderable: false, searchable: false },
             ],
             order: [[4, 'desc']], // Urutkan berdasarkan tanggal_pengajuan descending

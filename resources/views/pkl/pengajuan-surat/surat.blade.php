@@ -43,6 +43,12 @@
         text-align: center;
         flex: 1;
         padding: 0 10px;
+        display: flex;
+        align-items: center;
+        margin : 0.01px;
+        justify-content: space-between;
+        padding-bottom: 7px;
+        border-bottom: 1px solid black;
     }
 
     .header-center h1 {
@@ -128,7 +134,7 @@
 <body>
     <!-- Header Section -->
     <div class="header">
-        <img src="assets/img/SMK_KARBAK.png" alt="School Logo">
+    <img src="{{ public_path('assets/img/SMK_KARBAK.png') }}" alt="School Logo" style="position: absolute; top: 0; left: 0;">
         <div class="header-center">
             <h1>YAYASAN PENDIDIKAN EKONOMI</h1>
             <h2>SMK KARYA BHAKTI BREBES</h2>
@@ -137,7 +143,7 @@
                 Email: <a href="mailto:karyabhakti.brebes@gmail.com">karyabhakti.brebes@gmail.com</a></p>
             <p><strong>Terakreditasi: A</strong></p>
         </div>
-        <img src="assets\img\Pictures\logo delta.png" alt="Delta PAS Logo">
+    <img src="{{ public_path('assets/img/Pictures/logo delta.png') }}" alt="Delta PAS Logo" style="position: absolute; top: 0; right: 0; height: 70 px; width: 95px;">
     </div>
 
     <!-- Main Content -->
@@ -147,19 +153,18 @@
             <table>
                 <tr>
                     <td style="width: 70%; vertical-align: top;">
-                        <p>Nomor: 143/I.03.5.SMK-KB/M 2023</p>
+                        <p>Nomor: 143/I.03.5.SMK-KB/M 2025</p>
                         <p>Lampiran: -</p>
                         <p>Hal: <strong>Permohonan Ijin Praktik Kerja Lapangan (PKL)</strong></p>
                     </td>
                     <td style="width: 30%; text-align: right; vertical-align: top;">
-                        <p>Brebes, Mei 2023</p>
+                        <p>Brebes, {{ \Carbon\Carbon::now()->locale('id_ID')->translatedFormat('d F Y') }}</p>
                     </td>
                 </tr>
             </table>
-            <p>Kepada Yth.<br>
-                Manager KSP BINA RAHARDJA<br>
-                CABANG BREBES<br>
-                Di Brebes
+            Kepada Yth.<br>
+                {{ $surat->kepada_yth }}
+                <br>Di tempat
             </p>
         </div>
 
@@ -167,7 +172,7 @@
             Dalam rangka menumbuhkembangkan karakter dan budaya kerja yang profesional pada Peserta Didik,
             meningkatkan kompetensi Peserta Didik sesuai kurikulum dan kebutuhan dunia kerja,
             dan menyiapkan kemandirian Peserta Didik untuk bekerja dan/atau berwirausaha,
-            maka pada tahun pelajaran 2023/2024, SMK Karya Bhakti Brebes akan melaksanakan program
+            maka pada tahun pelajaran 2025/2026, SMK Karya Bhakti Brebes akan melaksanakan program
             Praktik Kerja Lapangan (PKL) bagi Peserta Didik kelas XI pada Industri dan Dunia Kerja
             (IDUKA) yang dianggap relevan.
         </p>
@@ -176,7 +181,7 @@
             Sehubungan hal tersebut, maka kami mohon bantuan Bapak/Ibu/Saudara selaku
             Pimpinan/Kepala/Manager untuk berkenan menerima Peserta Didik kami guna melaksanakan PKL
             di institusi yang Bapak/Ibu/Saudara pimpin dengan waktu pelaksanaan mulai dari tanggal
-            <strong>24 Juli sampai dengan 24 Oktober 2023</strong>.
+            <strong>{{$surat->tanggal_mulai}} sampai dengan {{$surat->tanggal_selesai}}</strong>.
         </p>
 
         <table class="table">
@@ -184,23 +189,17 @@
                 <tr>
                     <th>No.</th>
                     <th>Nama</th>
-                    <th>Kelas</th>
                     <th>Kompetensi Keahlian</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach($siswa as $index => $student)
                 <tr>
-                    <td>1</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $student->nama }}</td>
+                    <td>{{ $student->jurusan }}</td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                @endforeach
             </tbody>
         </table>
 
@@ -218,11 +217,11 @@
     </div>
 
     <!-- Footer Section -->
-    <div class="footer-section">
+    <div style="position: fixed; bottom: 0; width: 100%" class="footer-section">
         <table>
             <tr>
                 <td>
-                    <img src="assets\img\Pictures\kan.png" alt="KAN Logo">
+                <img src="{{ public_path('assets/img/Pictures/kan.png') }}" alt="KAN Logo">
                 </td>
                 <td style="text-align: center;">
                     <strong>Kompetensi Keahlian:</strong><br>
@@ -231,10 +230,11 @@
                     Bisnis Daring dan Pemasaran
                 </td>
                 <td>
-                    <img src="assets\img\iaf.jpg" alt="IAF Logo">
+                <img src="{{ public_path('assets/img/iaf.jpg') }}" alt="IAF Logo">
                 </td>
             </tr>
         </table>
     </div>
+    
 </body>
 </html>

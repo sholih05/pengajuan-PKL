@@ -6,6 +6,7 @@ use App\Exports\PresensiExport;
 use App\Http\Controllers\Admin\NilaiQuisionerController;
 use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Controller;
+use App\Models\FileModel;
 use App\Models\Penempatan;
 use App\Models\Presensi;
 use App\Models\Quesioner;
@@ -36,7 +37,9 @@ class ProfilSiswaController extends Controller
         $activeAcademicYear = getActiveAcademicYear();
         $ta = ThnAkademik::where('is_active', true)->orderBy('id_ta', 'desc')->get();
 
-        return view('siswa.profile', compact('siswa', 'activeAcademicYear', 'ta',));
+        $files = FileModel::all(); 
+
+        return view('siswa.profile', compact('siswa', 'activeAcademicYear', 'ta','files'));
     }
 
 

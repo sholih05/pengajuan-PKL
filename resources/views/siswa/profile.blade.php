@@ -2,6 +2,12 @@
 @section('title')
 Siswa
 @endsection
+
+@section('css')
+<link href="{{ asset('assets') }}/vendor/dataTables/dataTables.bootstrap5.css" rel="stylesheet">
+<link href="{{ asset('assets') }}/vendor/select2/css/select2.min.css" rel="stylesheet">
+<link href="{{ asset('assets') }}/vendor/select2/css/select2-bootstrap-5-theme.min.css" rel="stylesheet">
+@endsection
 @section('pagetitle')
 <div class="pagetitle d-flex justify-content-between align-items-center">
     <div>
@@ -179,6 +185,10 @@ Siswa
                             Kegiatan</button>
                     </li>
                     <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#upload-file">
+                            Upload Profile</button>
+                    </li>
+                    <li class="nav-item">
                         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#pengajuan-surat">pengajuan
                             surat</button>
                     </li>
@@ -268,6 +278,91 @@ Siswa
                         </div>
                     </div>
 
+
+                    <!-- upload-file -->
+                    <div class="tab-pane fade pt-3" id="upload-file">
+                        <h1 class="text-center mb-4">Upload dan Kelola File</h1>
+
+                        <!-- Form Upload -->
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <form action="{{ route('d.upload') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <label for="file" class="form-label">Pilih File:</label>
+                                        <input type="file" class="form-control" name="file" id="file" accept=".pdf,.doc,.docx,.png,." required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Upload</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Daftar File -->
+                        <h2 class="mb-3">Daftar File</h2>
+                        @if ($files->isNotEmpty())
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama File</th>
+                                        <th>Tanggal Upload</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($files as $index => $file)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $file->file_name }}</td>
+                                            <td>{{ $file->uploaded_at }}</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <!-- Edit Button -->
+                                                    <!-- <button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal"
+                                                        data-id="{{ $file->id }}" data-name="{{ $file->file_name }}">Edit</button> -->
+                                                    <!-- Delete Button -->
+                                                    <a href="{{ route('d.delete', $file->id) }}" class="btn btn-danger">Hapus</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @else
+                            <p class="text-muted">Tidak ada file yang diunggah.</p>
+                        @endif
+
+                        <!-- Modal Edit -->
+                        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editModalLabel">Edit Nama File</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                    <form action="{{  route('d.update', $file->id) }}" method="POST" enctype="multipart/form-data" id="editForm">
+                                        @csrf
+                                        @method('PUT')
+                                            <div class="mb-3">
+                                                <label for="new_name" class="form-label">Nama Baru:</label>
+                                                <input type="text" class="form-control" id="new_name" name="new_name" required />
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="file" class="form-label">Unggah File Baru (Opsional):</label>
+                                                <input type="file" class="form-control" id="file" name="file" accept=".pdf,.doc,.docx,.png">
+                                            </div>
+
+                                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
                     <!-- pengajuan surat Tab-->
                     <div class="tab-pane fade pt-3" id="pengajuan-surat">
                         <div class="d-flex justify-content-between mb-3">
@@ -297,121 +392,6 @@ Siswa
                         </div>
                     </div>
 
-                    <!-- Modal Form Pengajuan Surat -->
-                    <div class="modal fade" id="pengajuanModal" tabindex="-1" aria-labelledby="pengajuanModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="pengajuanModalLabel">Pengajuan Surat</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="formPengajuan">
-                                        <div class="mb-3">
-                                            <label for="namaSiswa1" class="form-label">Nama Siswa 1</label>
-                                            <input type="text" class="form-control" id="namaSiswa1" name="namaSiswa[]" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="namaSiswa2" class="form-label">Nama Siswa 2</label>
-                                            <input type="text" class="form-control" id="namaSiswa2" name="namaSiswa[]" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="namaSiswa3" class="form-label">Nama Siswa 3</label>
-                                            <input type="text" class="form-control" id="namaSiswa3" name="namaSiswa[]" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="namaSiswa4" class="form-label">Nama Siswa 4</label>
-                                            <input type="text" class="form-control" id="namaSiswa4" name="namaSiswa[]" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="jurusan" class="form-label">Jurusan</label>
-                                            <input type="text" class="form-control" id="jurusan" name="jurusan" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="perusahaan" class="form-label">Perusahaan Tujuan</label>
-                                            <input type="text" class="form-control" id="perusahaan" name="perusahaan" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="tanggal" class="form-label">Tanggal Pengajuan</label>
-                                            <input type="date" class="form-control" id="tanggalPengajuan" name="tanggal" required>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Ajukan</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- modal pengajuan surat new -->
-                    <!-- <div class="modal fade" id="pengajuanModal" tabindex="-1" aria-labelledby="pengajuanModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="pengajuanModalLabel">Pengajuan Surat</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="formPengajuan">
-                                        <div class="mb-3">
-                                            <label for="anggota1" class="form-label">Anggota 1</label>
-                                            <input type="text" class="form-control" id="anggota1" name="anggota_1" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="anggota2" class="form-label">Anggota 2</label>
-                                            <input type="text" class="form-control" id="anggota2" name="anggota_2" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="anggota3" class="form-label">Anggota 3</label>
-                                            <input type="text" class="form-control" id="anggota3" name="anggota_3" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="anggota4" class="form-label">Anggota 4</label>
-                                            <input type="text" class="form-control" id="anggota4" name="anggota_4" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="jurusan" class="form-label">Jurusan</label>
-                                            <input type="text" class="form-control" id="jurusan" name="jurusan" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="perusahaan" class="form-label">Perusahaan Tujuan</label>
-                                            <input type="text" class="form-control" id="perusahaan" name="perusahaan_tujuan" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="tanggalPengajuan" class="form-label">Tanggal Pengajuan</label>
-                                            <input type="date" class="form-control" id="tanggalPengajuan" name="tanggal_pengajuan" required>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Ajukan</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-
-
-                    <!-- Kegiatan Tab -->
-                    <div class="tab-pane fade pt-3" id="profile-catatan">
-                        <div class="d-flex justify-content-end">
-                            <button class="btn btn-success btn-sm me-2"
-                                onclick="getLaporan('/d/siswa/catatanExcel/')"><i
-                                    class="bi bi-file-earmark-excel"></i> Excel</button>
-                            <button class="btn btn-danger btn-sm" onclick="getLaporan('/d/siswa/catatanPdf/')"><i
-                                    class="bi bi-file-earmark-pdf"></i> Pdf</button>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-striped table-sm" id="table-catatan" width="100%">
-                                <thead>
-                                    <tr>
-                                        <th>Tanggal</th>
-                                        <th>Catatan</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                    </div>
-
-                    @if (session('nis') == $siswa->nis || in_array(auth()->user()->role, [1, 2]))
-                    <!-- Data Quest Tab -->
                     <div class="tab-pane fade profile-quesioner" id="profile-quesioner">
                         <form id="questionForm" class="row g-3 needs-validation" novalidate>
                             @csrf
@@ -442,48 +422,117 @@ Siswa
                         </form>
                     </div>
 
-                    <!-- Change Password Tab -->
-                    <div class="tab-pane fade pt-3" id="profile-change-password">
-                        <!-- Change Password Form -->
-                        <form id="changePasswordForm">
-                            @csrf
-                            <div class="row mb-3">
-                                <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current
-                                    Password</label>
-                                <div class="col-md-8 col-lg-9">
-                                    <input name="password" type="password" class="form-control"
-                                        id="currentPassword" required>
+                    <!-- Modal Form Pengajuan Surat -->
+                    <div class="modal fade" id="pengajuanModal" tabindex="-1" aria-labelledby="pengajuanModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="pengajuanModalLabel">Pengajuan Surat</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New
-                                    Password</label>
-                                <div class="col-md-8 col-lg-9">
-                                    <input name="newpassword" type="password" class="form-control"
-                                        id="newPassword" minlength="8" required>
+                                <div class="modal-body">
+                                    <form id="formPengajuan">
+                                        <input type="hidden" id="pengajuanId" name="id">
+                                        @for ($i = 1; $i <= 4; $i++)
+                                            <div class="mb-3">
+                                            <label for="namaSiswa{{ $i }}" class="form-label">Nama Siswa {{ $i }}</label>
+                                            <select type="text" id="nis{{ $i }}" class="form-select" id="namaSiswa{{ $i }}" name="namaSiswa[]" required></select>
                                 </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New
-                                    Password</label>
-                                <div class="col-md-8 col-lg-9">
-                                    <input name="renewpassword" type="password" class="form-control"
-                                        id="renewPassword" minlength="8" required>
+                                @endfor
+                                <div class="mb-3">
+                                    <label for="perusahaan" class="form-label">Perusahaan Tujuan</label>
+                                    <input type="text" class="form-control" id="perusahaan" name="perusahaan_tujuan" required>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="tanggalPengajuan" class="form-label">Tanggal Pengajuan</label>
+                                    <input type="date" class="form-control" id="tanggalPengajuan" name="tanggal_pengajuan" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="tanggalMulai" class="form-label">Tanggal Mulai</label>
+                                    <input type="date" class="form-control" id="tanggalMulai" name="tanggal_mulai" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="tanggalSelesai" class="form-label">Tanggal Selesai</label>
+                                    <input type="date" class="form-control" id="tanggalSelesai" name="tanggal_selesai" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="kepadaYth" class="form-label">Kepada Yth</label>
+                                    <input type="text" class="form-control" id="kepada_yth" name="kepada_yth" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Simpan</button>
+                                </form>
                             </div>
-
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Ganti Password</button>
-                            </div>
-                        </form><!-- End Change Password Form -->
+                        </div>
                     </div>
-                    @endif
-                </div><!-- End Bordered Tabs -->
-            </div>
+                </div>
+
+                <!-- Kegiatan Tab -->
+                <div class="tab-pane fade pt-3" id="profile-catatan">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-success btn-sm me-2"
+                            onclick="getLaporan('/d/siswa/catatanExcel/')"><i
+                                class="bi bi-file-earmark-excel"></i> Excel</button>
+                        <button class="btn btn-danger btn-sm" onclick="getLaporan('/d/siswa/catatanPdf/')"><i
+                                class="bi bi-file-earmark-pdf"></i> Pdf</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-sm" id="table-catatan" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Catatan</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+                @if (session('nis') == $siswa->nis || in_array(auth()->user()->role, [1, 2]))
+                <!-- Data Quest Tab -->
+
+
+                <!-- Change Password Tab -->
+                <div class="tab-pane fade pt-3" id="profile-change-password">
+                    <!-- Change Password Form -->
+                    <form id="changePasswordForm">
+                        @csrf
+                        <div class="row mb-3">
+                            <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current
+                                Password</label>
+                            <div class="col-md-8 col-lg-9">
+                                <input name="password" type="password" class="form-control"
+                                    id="currentPassword" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New
+                                Password</label>
+                            <div class="col-md-8 col-lg-9">
+                                <input name="newpassword" type="password" class="form-control"
+                                    id="newPassword" minlength="8" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New
+                                Password</label>
+                            <div class="col-md-8 col-lg-9">
+                                <input name="renewpassword" type="password" class="form-control"
+                                    id="renewPassword" minlength="8" required>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Ganti Password</button>
+                        </div>
+                    </form><!-- End Change Password Form -->
+                </div>
+                @endif
+            </div><!-- End Bordered Tabs -->
         </div>
     </div>
+</div>
 </div>
 
 <!-- Modal -->
@@ -545,7 +594,52 @@ Siswa
 <script src="{{ asset('assets') }}/vendor/dataTables/dataTables.js"></script>
 <script src="{{ asset('assets') }}/vendor/dataTables/dataTables.bootstrap5.js"></script>
 <script src="{{ asset('assets') }}/vendor/leaflet/leaflet.js"></script>
+<script src="{{ asset('assets') }}/vendor/select2/js/select2.min.js"></script>
 {{-- jikatidak ada penempatan maka tidak tampil --}}
+
+<!-- pengajuan js -->
+<script>
+    $(document).ready(function() {
+        for (let i = 1; i <= 4; i++) {
+            $(`#nis${i}`).select2({
+                theme: 'bootstrap-5',
+                dropdownParent: $("#pengajuanModal"),
+                placeholder: 'Cari Siswa NIS/Nama...',
+                minimumInputLength: 1,
+                ajax: {
+                    url: "{{ route('siswa.searchh') }}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            q: params.term,
+                            k: 'penempatan',
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data, function(item) {
+                                var txt = '';
+                                var j = 0;
+                                item.penempatan.forEach(el => {
+                                    if (el.id_ta == $('#id_ta').val()) {
+                                        j++;
+                                        txt = ` (Sudah di Tempatkan ${j}x)`;
+                                    }
+                                });
+                                return {
+                                    id: item.nis,
+                                    text: item.nis + ' - ' + item.nama + txt // Tampilkan data siswa
+                                }
+                            })
+                        };
+                    },
+                    cache: true
+                }
+            });
+        }
+    });
+</script>
 {{-- ABSENSI --}}
 <script>
     let map;
@@ -1041,55 +1135,35 @@ in_array(session('id_instruktur'), $siswa->penempatan->pluck('instruktur.id_inst
         // js pengajuan surat
         $('#formPengajuan').on('submit', function(e) {
             e.preventDefault();
-
-            // Ambil semua input namaSiswa
-            var namaSiswa = $("input[name='namaSiswa[]']").map(function() {
-                return $(this).val();
-            }).get();
-
-            var data = {
-                namaSiswa: namaSiswa,
-                jurusan: $('#jurusan').val(),
-                perusahaan_tujuan: $('#perusahaan').val(),
-                tanggal_pengajuan: $('#tanggalPengajuan').val(),
-                status: 'Pending',
-                _token: "{{ csrf_token() }}" // Sertakan CSRF token jika diperlukan
-            };
-
-            console.log(data);
-            var url = "{{ route('pengajuan.surat.store') }}";
+            var id = $('#pengajuanId').val();
+            var url = id ? "{{ route('pengajuan.surat.update', '') }}/" + id : "{{ route('pengajuan.surat.store') }}";
+            var method = id ? "PUT" : "POST";
 
             $.ajax({
                 url: url,
-                method: "POST",
-                data: data,
+                method: method,
+                data: $(this).serialize(), // Pastikan field "tanggal_pengajuan" ada dalam serialize
                 success: function(response) {
                     $('#pengajuanModal').modal('hide');
-                    if (response.status) {
-                        Toast.fire({
-                            icon: "success",
-                            title: response.message
-                        });
-                        $('#formPengajuan')[0].reset();
-
-                        tablePengajuan.ajax.reload();
-                    } else {
-                        Toast.fire({
-                            icon: "error",
-                            title: response.message
-                        });
-                    }
+                    $('#formPengajuan')[0].reset();
+                    $('#pengajuan-surat').DataTable().ajax.reload();
+                    Toast.fire({
+                        icon: "success",
+                        title: response.message
+                    });
                 },
-                error: function() {
+                error: function(xhr) {
+                    if (xhr.responseJSON && xhr.responseJSON.errors) {
+                        // Tampilkan error pada console untuk debug
+                        console.error(xhr.responseJSON.errors);
+                    }
                     Toast.fire({
                         icon: "error",
-                        title: 'Woops! Fatal Error.'
+                        title: "Terjadi kesalahan"
                     });
                 }
             });
         });
-
-
     });
 
 
@@ -1296,6 +1370,21 @@ in_array(session('id_instruktur'), $siswa->penempatan->pluck('instruktur.id_inst
         });
     }
 </script>
+<script>
+    const editModal = document.getElementById('editModal');
+    editModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget; // Button yang ditekan
+        const fileId = button.getAttribute('data-id'); // ID file
+        const fileName = button.getAttribute('data-name'); // Nama file
+
+        const form = document.getElementById('editForm');
+        form.action = `/d/update/${fileId}`; // Update action URL
+
+        const nameInput = document.getElementById('new_name');
+        nameInput.value = fileName; // Isi input dengan nama file
+    });
+</script>
+
 
 {{-- foto --}}
 <script>

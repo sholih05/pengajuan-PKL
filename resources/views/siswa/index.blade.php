@@ -36,6 +36,7 @@
                             <th>NIS</th>
                             <th>NISN</th>
                             <th>Nama</th>
+                            <th>Kelas</th>
                             <th>#</th>
                         </tr>
                     </thead>
@@ -94,6 +95,10 @@
                     {
                         data: 'nama_siswa',
                         name: 'nama'
+                    },
+                    {
+                        data: 'kelas',
+                        name: 'kelas'
                     },
                     {
                         data: 'action',

@@ -82,6 +82,8 @@
             </div>
         </div>
 
+
+
         <!-- Tabs Section -->
         <div class="col-xl-8">
             <div class="card">
@@ -101,7 +103,10 @@
                                 Kegiatan</button>
                         </li>
                         @if (session('id_instruktur') == $instruktur->id_instruktur || in_array(auth()->user()->role, [1, 2]))
-
+                        <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab"
+                                    data-bs-target="#profile-quesioner">Quesioner</button>
+                            </li>
                             <li class="nav-item">
                                 <button class="nav-link" data-bs-toggle="tab"
                                     data-bs-target="#profile-kendala-saran">Kendala & Saran</button>
