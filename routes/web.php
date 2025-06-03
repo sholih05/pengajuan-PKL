@@ -118,8 +118,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('penilaian/{id_siswa}/edit', [PenilaianController::class, 'edit'])->name('penilaian.edit');
         Route::put('penilaian/{id_siswa}', [PenilaianController::class, 'update'])->name('penilaian.update');
         Route::delete('penilaian/{id_siswa}', [PenilaianController::class, 'destroy'])->name('penilaian.destroy');
-        Route::get('penilaian/{id_siswa}/print', [PenilaianController::class, 'print'])->name('penilaian.print');
         Route::get('penilaian/dashboard', [PenilaianController::class, 'dashboard'])->name('penilaian.dashboard');
+    });
+
+    Route::group(['middleware' => [RoleMiddleware::class . ':1,2,4,5']], function () {
+        Route::get('penilaian/{id_siswa}/print', [PenilaianController::class, 'print'])->name('penilaian.print');
+
     });
 
     
@@ -261,6 +265,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/kegiatanPdf/{nis}/{id_penempatan}/{id_ta}', 'kegiatanPdf')->name('d.siswa.kegiatanPdf');
         Route::get('/catatanPdf/{nis}/{id_penempatan}/{id_ta}', 'catatanPdf')->name('d.siswa.catatanPdf');
         Route::get('/resumePdf/{nis}', 'resumePdf')->name('d.siswa.resumePdf');
+
+        Route::get('/penilaian/siswa', 'nilaiSiswa')->name('d.siswa.penilaian');
+
     });
 
     // guru
