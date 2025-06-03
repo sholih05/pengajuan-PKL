@@ -199,6 +199,11 @@ Siswa
                     @if (session('nis') == $siswa->nis || in_array(auth()->user()->role, [1, 2]))
                     <li class="nav-item">
                         <button class="nav-link" data-bs-toggle="tab"
+                            data-bs-target="#nilai-pkl">Nilai PKL</button>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab"
                             data-bs-target="#profile-quesioner">Quisioner</button>
                     </li>
                     <li class="nav-item">
@@ -488,7 +493,19 @@ Siswa
                 </div>
 
                 @if (session('nis') == $siswa->nis || in_array(auth()->user()->role, [1, 2]))
-                <!-- Data Quest Tab -->
+                {{-- Data Nilai PKL --}}
+                    <div class="tab-pane fade pt-3 nilai-pkl" id="nilai-pkl">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-sm" id="table-nilai" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Laporan</th>
+                                        <th>#</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
 
 
                 <!-- Change Password Tab -->
@@ -933,6 +950,25 @@ in_array(session('id_instruktur'), $siswa->penempatan->pluck('instruktur.id_inst
                 {
                     data: 'catatan',
                     name: 'catatan'
+                }
+            ]
+        });
+
+        var table5 = $('#table-nilai').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '{!! route('d.siswa.penilaian') !!}',
+                    type: 'GET',
+                },
+                columns: [
+                    {
+                        data: 'laporan',
+                        name: 'laporan'
+                    },
+                {
+                    data: 'aksi',
+                    name: 'aksi'
                 }
             ]
         });
