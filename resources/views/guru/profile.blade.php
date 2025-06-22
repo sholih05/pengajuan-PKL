@@ -100,15 +100,16 @@
                             <button class="nav-link" data-bs-toggle="tab"
                                 data-bs-target="#profile-absensi">Kehadiran</button>
                         </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab"
-                                data-bs-target="#detail-surat">Detail Surat</button>
-                        </li>
+                        
                         <li class="nav-item">
                             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-catatan">Catatan
                                 Kegiatan</button>
                         </li>
                         @if (session('id_guru') == $guru->id_guru || in_array(auth()->user()->role, [1, 2]))
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab"
+                                data-bs-target="#detail-surat">Detail Surat</button>
+                        </li>
                             <li class="nav-item">
                                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">
                                     Akun</button>
@@ -153,9 +154,10 @@
                                                 <td>{{ $file->siswa_id ?? 'Tidak Diketahui' }}</td>
                                                 <td>{{ $file->uploaded_at }}</td>
                                                 <td>
-                                                    <a href="#" class="btn btn-success btn-sm">
-                                                        <i class="bi bi-download"></i> Unduh
-                                                    </a>
+                                                <a href="{{ asset('storage/' . $file->file_path) }}" target="_blank" class="btn btn-primary btn-sm">
+                                                    <i class="bi bi-eye"></i> Lihat File
+                                                </a>
+
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -4,14 +4,14 @@
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{ route('dashboard') }}">
-                <i class="bi bi-grid"></i>
+                <i class="bi bi-house-door"></i>
                 <span>Dashboard</span>
             </a>
         </li><!-- End Dashboard Nav -->
 
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#data-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-rocket-takeoff"></i><span>PKL</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-tools"></i><span>PKL</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="data-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav" style="">
                 <li>
@@ -52,21 +52,21 @@
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{ route('siswa') }}">
-                <i class="bi bi-person-square"></i>
+                <i class="bi bi-person-lines-fill"></i>
                 <span>Siswa</span>
             </a>
         </li><!-- End Siswa Nav -->
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{ route('guru') }}">
-                <i class="bi bi-person-vcard"></i>
+                <i class="bi bi-person-video3"></i>
                 <span>Guru</span>
             </a>
         </li><!-- End Siswa Nav -->
 
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#dudi-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-building"></i><span>DUDI</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-globe"></i><span>DUDI</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="dudi-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav" style="">
                 <li>
@@ -91,7 +91,7 @@
         @if (auth()->user()->role == 1)
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#master-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-menu-button-wide"></i><span>Master</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-database"></i><span>Master</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="master-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav" style="">
                     <li>

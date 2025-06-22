@@ -9,6 +9,7 @@ use App\Models\Siswa;
 use App\Models\Jurusan;
 use App\Models\Kelas;
 use App\Models\Penempatan;
+use App\Models\Presensi;
 use App\Models\TemplatePenilaian;
 use App\Models\TemplatePenilaianItem;
 use App\Models\ThnAkademik;
@@ -199,6 +200,7 @@ class PenilaianController extends Controller
             $validated = $request->validate([
                 'id_siswa' => 'required|exists:siswa,nis',
                 'catatan' => 'nullable|string',
+                'projectpkl' => 'required|string',
                 'nilai-sub' => 'required|array',
                 'nilai-sub.*' => 'required|in:0,1',
             ]);
@@ -232,6 +234,10 @@ class PenilaianController extends Controller
                 $siswa->id_jurusan,
                 $userId
             );
+
+            Penempatan::where('nis', $request->id_siswa)->update([
+                'projectpkl' => $request->projectpkl
+            ]);
 
             // Step 2: Calculate and save main indicator scores to Penilaian
             $this->saveMainIndicatorAssessments(
@@ -696,6 +702,8 @@ class PenilaianController extends Controller
                     ->with('error', 'Data penilaian tidak ditemukan.');
             }
 
+            $projectpkl = Penempatan::where('nis', $nis)->first();
+
             // Get main indicator assessments
             $mainIndicatorPenilaian = Penilaian::with(['prgObsvr'])
                 ->where('nis', $nis)
@@ -730,7 +738,8 @@ class PenilaianController extends Controller
                 'mainIndicatorPenilaian',
                 'nilaiAkhir',
                 'catatanText',
-                'penempatan'
+                'penempatan',
+                'projectpkl'
             ));
 
         } catch (\Exception $e) {
@@ -810,12 +819,14 @@ class PenilaianController extends Controller
 
             // Get catatan from main penilaian record
             $catatanText = $mainPenilaian->catatan ?? '';
+            $projectpkl = Penempatan::where('nis', $nis)->first();
 
             return view('pkl.penilaian.edit', compact(
                 'siswa',
                 'templates',
                 'existingValues',
-                'catatanText'
+                'catatanText',
+                'projectpkl'
             ));
 
         } catch (\Exception $e) {
@@ -895,6 +906,9 @@ class PenilaianController extends Controller
             // Step 1: Deactivate existing records
             $this->deactivateExistingRecords($nis, $siswa->id_jurusan, $tahunAkademik->id_ta, $userId);
 
+            if ($request->projectpkl) {
+                Penempatan::where('nis', $nis)->update(['projectpkl' => $request->projectpkl]);
+            }
             // Step 2: Process and save updated assessment data
             $assessmentData = $this->processAssessmentData(
                 $request->input('nilai-sub', []),
@@ -1186,7 +1200,6 @@ class PenilaianController extends Controller
                 ->where('nis', $nis)
                 ->where('is_active', 1)
                 ->firstOrFail();
-
             // Get current active academic year
             $tahunAkademik = ThnAkademik::where('is_active', 1)->first();
             if (!$tahunAkademik) {
@@ -1196,6 +1209,13 @@ class PenilaianController extends Controller
 
             // Get Penempatan
             $penempatan = Penempatan::where('nis', $siswa->nis)
+                ->first();
+
+            $presensi = Presensi::where('id_penempatan', $penempatan->id_penempatan)
+                ->selectRaw('keterangan, count(*) as jumlah')
+                ->groupBy('keterangan')->get();
+            
+            $projectpkl = Penempatan::where('nis', $siswa->nis)
                 ->first();
 
             // Get main penilaian record
@@ -1249,7 +1269,9 @@ class PenilaianController extends Controller
                 'nilaiAkhir',
                 'catatanText',
                 'tahunAkademik',
-                'penempatan'
+                'penempatan',
+                'presensi',
+                'projectpkl'
             ));
 
         } catch (\Exception $e) {

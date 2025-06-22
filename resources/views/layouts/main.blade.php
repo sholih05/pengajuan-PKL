@@ -54,7 +54,17 @@
 
             <div class="d-flex align-items-center justify-content-between">
                 <a href="{{ url('/') }}" class="logo d-flex align-items-center">
-                    <img src="{{ asset('assets') }}/img/SMK_KARBAK.png" alt="">
+                    <!-- <img src="{{ asset('assets') }}/img/bgputih.png" alt=""> -->
+                    <div style="
+                        display: inline-block; 
+                        position: relative; 
+                        background-color: white; 
+                        clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+                        padding: 1,5px;
+                    ">
+                        <img src="{{ asset('assets') }}/img/SMK_KARBAK.png" alt="Logo" style="display: block; width: 100%; height: auto;">
+                    </div>
+
                     <span class="d-none d-lg-block">Monitoring</span>
                 </a>
                 @if (auth()->user()->role == 1 || auth()->user()->role == 2)

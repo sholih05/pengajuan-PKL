@@ -18,6 +18,7 @@ class Penempatan extends Model
         'id_ta',
         'id_guru',
         'id_instruktur',
+        'projectpkl',
         'is_active',
         'created_at',
         'created_by',

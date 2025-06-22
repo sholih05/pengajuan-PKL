@@ -2,6 +2,10 @@
 @section('title')
     Instruktur
 @endsection
+@section('css')
+<link href="{{ asset('assets') }}/vendor/select2/css/select2.min.css" rel="stylesheet">
+<link href="{{ asset('assets') }}/vendor/select2/css/select2-bootstrap-5-theme.min.css" rel="stylesheet">
+@endsection
 @section('pagetitle')
     <div class="pagetitle d-flex justify-content-between align-items-center">
         <div>
@@ -103,9 +107,9 @@
                                 Kegiatan</button>
                         </li>
                         @if (session('id_instruktur') == $instruktur->id_instruktur || in_array(auth()->user()->role, [1, 2]))
-                        <li class="nav-item">
+                            <li class="nav-item">
                                 <button class="nav-link" data-bs-toggle="tab"
-                                    data-bs-target="#profile-quesioner">Quesioner</button>
+                                    data-bs-target="#profile-penilaian">Penilaian</button>
                             </li>
                             <li class="nav-item">
                                 <button class="nav-link" data-bs-toggle="tab"
@@ -115,12 +119,60 @@
                                 <button class="nav-link" data-bs-toggle="tab"
                                     data-bs-target="#profile-change-password">Akun</button>
                             </li>
+                            
                         @endif
                     </ul>
                     <div class="tab-content pt-2">
+
+                    <!-- absensi -->
+                    <!-- Modal Pop-up -->
+                    <div class="modal fade" id="absensiModal" tabindex="-1" aria-labelledby="absensiModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        
+                        <!-- Header -->
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="absensiModalLabel">Form Absensi Siswa</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <!-- Body -->
+                        <div class="modal-body">
+                            <form>
+                            <div class="mb-3">
+                                <label for="nis" class="form-label">Nama Siswa</label>
+                                <input type="text" class="form-control" id="nis" placeholder="Masukkan nama siswa">
+                               
+
+                            </div>
+                            <div class="mb-3">
+                                <label for="tanggal_absensi" class="form-label">Tanggal</label>
+                                <input type="date" class="form-control" id="tanggal_absensi">
+                            </div>
+                            <div class="mb-3">
+                                <label for="keterangan" class="form-label">Keterangan</label>
+                                <select class="form-select" id="keterangan">
+                                <option selected disabled>Pilih keterangan</option>
+                                <option value="izin">Izin</option>
+                                <option value="sakit">Sakit</option>
+                                <option value="alpa">Alpa</option>
+                                </select>
+                            </div>
+                            </form>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-success">Simpan Absensi</button>
+                        </div>
+
+                        </div>
+                    </div>
+                    </div>
                         <!-- Data Siswa Tab -->
                         <div class="tab-pane fade show active profile-data-siswa" id="profile-data-siswa">
-
+                            
                             <div class="table-responsive">
                                 <table class="table table-striped table-sm" id="table-data-siswa">
                                     <thead>
@@ -137,7 +189,9 @@
 
                         <!-- Data Absensi Tab -->
                         <div class="tab-pane fade profile-absensi" id="profile-absensi">
-
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#absensiModal">
+                            Isi Absensi
+                            </button>
                             <div class="table-responsive">
                                 <table class="table table-striped table-sm" id="table-presensi" width="100%">
                                     <thead>
@@ -146,6 +200,7 @@
                                             <th>Siswa</th>
                                             <th>Masuk</th>
                                             <th>Pulang</th>
+                                            <th>Keterangan</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -204,6 +259,22 @@
                             </div>
 
                             @if (session('id_instruktur') == $instruktur->id_instruktur || in_array(auth()->user()->role, [1, 2]))
+                            <!-- Penilaian Tab -->
+                            <div class="tab-pane fade profile-penilaian" id="profile-penilaian">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-sm" id="table-penilaian" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>NIS</th>
+                                                <th>Siswa</th>
+                                                <th>Jurusan</th>
+                                                <th>Penilaian</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            
                             <!-- Change Password Tab -->
                             <div class="tab-pane fade pt-3" id="profile-change-password">
                                 <!-- Change Password Form -->
@@ -324,7 +395,7 @@
 @section('js')
     <script src="{{ asset('assets') }}/vendor/dataTables/dataTables.js"></script>
     <script src="{{ asset('assets') }}/vendor/dataTables/dataTables.bootstrap5.js"></script>
-
+    <script src="{{ asset('assets') }}/vendor/select2/js/select2.min.js"></script>
     <script>
         $(function() {
             var table1 = $('#table-data-siswa').DataTable({
@@ -387,8 +458,39 @@
                         data: 'presensi_pulang',
                         name: 'pulang'
                     },
+                    {
+                    data: 'keterangan',
+                    name: 'keterangan',
+                }
+
                 ]
             });
+
+            // absensi
+           
+            // js keterangan
+                    $('#table-presensi').on('change', '.keterangan-select', function() {
+            var id = $(this).data('id'); // ambil id baris (pastikan ada di data yang dikirim dari server)
+            var value = $(this).val();
+
+            // Contoh AJAX untuk menyimpan perubahan
+            $.ajax({
+                url: '{{ route('presensi.updateKeterangan') }}', // sesuaikan dengan rute update kamu
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: id,
+                    keterangan: value
+                },
+                success: function(response) {
+                    alert('Keterangan berhasil diupdate');
+                },
+                error: function() {
+                    alert('Gagal mengupdate keterangan');
+                }
+            });
+        });
+
             var table3 = $('#table-catatan').DataTable({
                 processing: true,
                 serverSide: true,
@@ -471,6 +573,37 @@
                     @endif
                 ]
             });
+
+            var table5 = $('#table-penilaian').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '{!! route('d.instruktur.penilaian') !!}',
+                    type: 'GET',
+                    data: function(d) {
+                        d.id = '{{ $instruktur->id_instruktur }}';
+                        d.id_ta = $('#id_ta').val();
+                    }
+                },
+                columns: [
+                    {
+                        data: 'nis',
+                        name: 'nis'
+                    },
+                {
+                    data: 'nama_siswa',
+                    name: 'nama_siswa'
+                },
+                {
+                    data: 'jurusan',
+                    name: 'jurusan'
+                },
+                {
+                    data: 'penilaian',
+                    name: 'penilaian'
+                }
+            ]
+        });
 
             $('#id_ta').on('change', function() {
                 table1.ajax.reload();
@@ -621,6 +754,43 @@
     @if (session('id_instruktur') == $instruktur->id_instruktur || in_array(auth()->user()->role, [1, 2]))
         <script>
             $(document).ready(function() {
+
+                $(`#nis`).select2({
+                theme: 'bootstrap-5',
+                dropdownParent: $("#pengajuanModal"),
+                placeholder: 'Cari Siswa NIS/Nama...',
+                minimumInputLength: 1,
+                ajax: {
+                    url: "{{ route('siswa.searchh') }}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            q: params.term,
+                            k: 'penempatan',
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data, function(item) {
+                                var txt = '';
+                                var j = 0;
+                                item.penempatan.forEach(el => {
+                                    if (el.id_ta == $('#id_ta').val()) {
+                                        j++;
+                                        txt = ` (Sudah di Tempatkan ${j}x)`;
+                                    }
+                                });
+                                return {
+                                    id: item.nis,
+                                    text: item.nis + ' - ' + item.nama + txt // Tampilkan data siswa
+                                }
+                            })
+                        };
+                    },
+                    cache: true
+                }
+            });
                 // Handle password change submission
                 $('#changePasswordForm').on('submit', function(e) {
                     e.preventDefault();

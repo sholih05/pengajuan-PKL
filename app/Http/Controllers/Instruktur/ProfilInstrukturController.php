@@ -162,6 +162,9 @@ class ProfilInstrukturController extends Controller
                         <label class="form-check-label" for="radio-instruktur0' . $dt->id_presensi . '"> Tidak </label>
                     </div>';
             })
+            ->addColumn('id', function ($dt) {
+                return $dt->id_presensi;
+            })
             ->addColumn('disetujui_guru', function ($dt) {
                 return $dt->is_acc_guru===1 ? 'Ya' : ($dt->is_acc_guru===0 ? 'Ya' : '');
             })
@@ -345,4 +348,18 @@ class ProfilInstrukturController extends Controller
             ->make(true);
 
     }
+
+            public function updateKeterangan(Request $request)
+        {
+            $request->validate([
+                'id' => 'required|exists:presensi,id_presensi',
+                'keterangan' => 'required|in:Hadir,Izin,Sakit,Alpha',
+            ]);
+
+            $presensi = Presensi::where('id_presensi', $request->id)->first();
+            $presensi->keterangan = $request->keterangan;
+            $presensi->save();
+
+            return response()->json(['success' => true, 'message' => 'Keterangan berhasil diupdate']);
+        }
 }

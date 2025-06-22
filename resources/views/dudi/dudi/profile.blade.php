@@ -1,15 +1,15 @@
 @extends('layouts.main')
 @section('title')
-    Instruktur
+    Dudi
 @endsection
 @section('pagetitle')
     <div class="pagetitle d-flex justify-content-between align-items-center">
         <div>
-            <h1>Instruktur</h1>
+            <h1>Dudi</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item">Instruktur</li>
-                    <li class="breadcrumb-item">{{$instruktur->nama}}</li>
+                    <li class="breadcrumb-item">Dudi</li>
+                    <li class="breadcrumb-item">{{$dudi->nama}}</li>
                     <li class="breadcrumb-item active">Profil</li>
                 </ol>
             </nav>
@@ -27,57 +27,29 @@
         <div class="col-xl-4">
             <div class="card">
                 <div class="card-body">
-                    <div class="mt-3">
-                        <label for="id_ta" class="form-label">Tahun Akademik</label>
-                        <select class="form-select" id="id_ta" name="id_ta">
-                            <option value="">Pilih</option>
-                            @foreach ($ta as $item)
-                                @if ($item->id_ta == $activeAcademicYear->id_ta)
-                                    <option value="{{ $item->id_ta }}" selected>{{ $item->tahun_akademik }}
-                                        (aktif)
-                                    </option>
-                                @else
-                                    <option value="{{ $item->id_ta }}">{{ $item->tahun_akademik }}</option>
-                                @endif
-                            @endforeach
-                        </select>
+                    <div class="row mt-3">
+                        <label class="col-sm-5 col-form-label">Tahun Akademik</label>
+                        <div class="col-sm-7">
+                            <select class="form-select" id="id_ta" name="id_ta_siswa">
+                                @foreach ($thnAkademik as $item)
+                                    <option value="{{ $item->id_ta }}"
+                                        @if ($item->id_ta == $thnAkademikAktif->id_ta) @selected(true) @endif>
+                                        {{ $item->tahun_akademik }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                    <h5 class="card-title">Data Instruktur</h5>
+
+                    <h5 class="card-title">Data Dudi</h5>
                     <ul class="list-group">
-                        <li class="list-group-item"><strong>ID: </strong>{{ $instruktur->id_instruktur }}</li>
-                        <li class="list-group-item"><strong>Nama: </strong>{{ $instruktur->nama }}</li>
-                        <li class="list-group-item"><strong>Email: </strong>{{ $instruktur->email }}</li>
-                        <li class="list-group-item"><strong>No. Kontak: </strong>{{ $instruktur->no_kontak }}</li>
-                        <li class="list-group-item"><strong>Gender:
-                            </strong>{{ $instruktur->gender == 'L' ? 'Laki-laki' : 'Perempuan' }}</li>
-                        <li class="list-group-item"><strong>Alamat: </strong>{{ $instruktur->alamat }}</li>
-                        <li class="list-group-item"><strong>Dudi: </strong> <a
-                                href="{{ url('/d/dudi?id=' . $instruktur->dudi->id_dudi) }}">{{ $instruktur->dudi->nama ?? '-' }}
-                            </a></li>
-                        <!-- Tambahkan info lain yang diperlukan -->
+                        <li class="list-group-item"><strong>Nama: </strong>{{ $dudi->nama }}</li>
+                        <li class="list-group-item"><strong>No. Kontak: </strong>{{ $dudi->no_kontak }}</li>
+                        <li class="list-group-item"><strong>Nama Pimpinan: </strong>{{ $dudi->nama_pimpinan }}</li>
+                        <li class="list-group-item"><strong>Alamat: </strong>{{ $dudi->alamat }}</li>
+                        <li class="list-group-item" style="height: 200px">
+                            <div id="map" style="height: 200px"></div>
+                        </li>
                     </ul>
-
-                    <h5 class="card-title mt-4">Guru Pembimbing</h5>
-                    @if ($penempatanGrouped->isNotEmpty())
-                        @foreach ($penempatanGrouped as $penempatanByInstruktur)
-                            @php
-                                $penempatan = $penempatanByInstruktur->first(); // Ambil satu penempatan per id_instruktur
-                            @endphp
-                            <ul class="list-group">
-                                <li class="list-group-item"><strong>Guru: </strong> <a
-                                        href="{{ url('/d/guru?id=' . $penempatan->guru->id_guru) }}">{{ $penempatan->guru->nama ?? '-' }}</a>
-                                </li>
-                                <li class="list-group-item"><strong>Periode:
-                                    </strong>{{ $penempatan->tahunAkademik->tahun_akademik ?? '-' }}</li>
-                            </ul>
-                            <br>
-                        @endforeach
-                    @else
-                        <ul class="list-group">
-                            <li class="list-group-item">Belum ada penempatan</li>
-                        </ul>
-                    @endif
-
                 </div>
             </div>
         </div>
@@ -89,280 +61,134 @@
                     <!-- Bordered Tabs -->
                     <ul class="nav nav-tabs nav-tabs-bordered">
                         <li class="nav-item">
-                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-data-siswa">Siswa
+                            <button class="nav-link active" data-bs-toggle="tab"
+                                data-bs-target="#profile-data-ketersediaan">Ketersediaan</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-data-siswa">Siswa
                                 Magang</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab"
-                                data-bs-target="#profile-absensi">Kehadiran</button>
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-data-guru">Guru
+                                Pembimbing</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-catatan">Catatan
-                                Kegiatan</button>
+                            <button class="nav-link" data-bs-toggle="tab"
+                                data-bs-target="#profile-data-instruktur">Instruktur</button>
                         </li>
-                        @if (session('id_instruktur') == $instruktur->id_instruktur || in_array(auth()->user()->role, [1, 2]))
-
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab"
-                                    data-bs-target="#profile-penilaian">Penilaian</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab"
-                                    data-bs-target="#profile-quesioner">Quesioner</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab"
-                                    data-bs-target="#profile-kendala-saran">Kendala & Saran</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab"
-                                    data-bs-target="#profile-change-password">Akun</button>
-                            </li>
-                        @endif
                     </ul>
                     <div class="tab-content pt-2">
                         <!-- Data Siswa Tab -->
-                        <div class="tab-pane fade show active profile-data-siswa" id="profile-data-siswa">
-
+                        <div class="tab-pane fade show active profile-data-ketersediaan" id="profile-data-ketersediaan">
+                            @if (in_array(auth()->user()->role, [1, 2, 4]) || session('id_dudi') == $dudi->id_dudi)
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-primary btn-sm" id="btnAdd"><i class="bi bi-plus-square"></i>
+                                    Tambah</button>
+                            </div>
+                            @endif
                             <div class="table-responsive">
-                                <table class="table table-striped table-sm" id="table-data-siswa">
+                                <table class="table table-striped table-sm" id="table-ketersediaan" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Tanggal</th>
+                                            <th>Jurusan</th>
+                                            @if (in_array(auth()->user()->role, [1, 2, 4]) || session('id_dudi') == $dudi->id_dudi)
+                                                <th>#</th>
+                                            @endif
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Data Siswa Tab -->
+                        <div class="tab-pane fade" id="profile-data-siswa">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-sm" id="table-siswa" width="100%">
                                     <thead>
                                         <tr>
                                             <th>NIS</th>
                                             <th>NISN</th>
                                             <th>Nama</th>
-                                            <th>Guru</th>
                                         </tr>
                                     </thead>
                                 </table>
                             </div>
                         </div>
 
-                        <!-- Data Quest Tab -->
-                        <div class="tab-pane fade profile-quesioner" id="profile-quesioner">
-                            <form id="questionForm" class="row g-3 needs-validation" novalidate>
-                                @csrf
-                                <input type="hidden" id="stt" name="stt" value="0">
-                                <input type="hidden" id="nis" name="nis" value="{{ $instruktur->id_instruktur }}">
-                                <div class="mb-3">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Quesioner</th>
-                                                <th>Ya</th>
-                                                <th>Tidak</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="quesioner-table">
-                                        </tbody>
-                                    </table>
-                                    <div id="spinner" style="display: none; text-align: center; margin-top: 20px;">
-                                        <div class="spinner-border text-primary" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="invalid-feedback"> Harap jawab semua pertanyaan. </div>
-                                </div>
-
-                                <button type="submit" class="btn btn-primary">Simpan</button>
-                            </form>
-                        </div>
-
-                        <!-- Data Absensi Tab -->
-                        <div class="tab-pane fade profile-absensi" id="profile-absensi">
-
+                        <!-- Data Guru Tab -->
+                        <div class="tab-pane fade profile-data-guru" id="profile-data-guru">
                             <div class="table-responsive">
-                                <table class="table table-striped table-sm" id="table-presensi" width="100%">
+                                <table class="table table-striped table-sm" id="table-guru" width="100%">
                                     <thead>
                                         <tr>
-                                            <th>Tanggal</th>
-                                            <th>Siswa</th>
-                                            <th>Masuk</th>
-                                            <th>Pulang</th>
+                                            <th>ID</th>
+                                            <th>Nama</th>
+                                            <th>Kontak</th>
+                                            <th>Email</th>
                                         </tr>
                                     </thead>
                                 </table>
                             </div>
                         </div>
 
-                        <!-- Data Catatan Tab -->
-                        <div class="tab-pane fade profile-catatan" id="profile-catatan">
-
+                        <!-- Data Instruktur Tab -->
+                        <div class="tab-pane fade profile-data-instruktur" id="profile-data-instruktur">
                             <div class="table-responsive">
-                                <table class="table table-striped table-sm" id="table-catatan" width="100%">
+                                <table class="table table-striped table-sm" id="table-instruktur" width="100%">
                                     <thead>
                                         <tr>
-                                            <th rowspan="2">Tanggal</th>
-                                            <th rowspan="2">Siswa</th>
-                                            <th rowspan="2">Kegiatan</th>
-                                            <th colspan="2">Disetujui</th>
-                                            <th rowspan="2">Catatan Instruktur</th>
-                                            @if (session('id_instruktur') == $instruktur->id_instruktur || in_array(auth()->user()->role, [1, 2]))
-                                                <th rowspan="2">#</th>
-                                            @endif
-                                        </tr>
-                                        <tr>
-                                            <th>Instruktur</th>
-                                            <th>Guru</th>
+                                            <th>ID</th>
+                                            <th>Nama</th>
+                                            <th>Kontak</th>
+                                            <th>Email</th>
                                         </tr>
                                     </thead>
                                 </table>
                             </div>
                         </div>
 
-
-                            <!-- Data Catatan Tab -->
-                            <div class="tab-pane fade profile-kendala-saran" id="profile-kendala-saran">
-                                @if (session('id_instruktur') == $instruktur->id_instruktur || in_array(auth()->user()->role, [1, 2]))
-                                    <div class="d-flex flex-row-reverse">
-                                        <button class="btn btn-primary btn-sm" id="btnAddKendalaSaran"><i
-                                                class="bi bi-plus-square"></i> Tambah</button>
-                                    </div>
-                                @endif
-
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-sm" id="table-kendala-saran" width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th>Tanggal</th>
-                                                <th>Kategori</th>
-                                                <th>Catatan</th>
-                                                @if (session('id_instruktur') == $instruktur->id_instruktur || in_array(auth()->user()->role, [1, 2]))
-                                                    <th>#</th>
-                                                @endif
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                            </div>
-
-                            @if (session('id_instruktur') == $instruktur->id_instruktur || in_array(auth()->user()->role, [1, 2]))
-                            <!-- Penilaian Tab -->
-                            <div class="tab-pane fade profile-penilaian" id="profile-penilaian">
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-sm" id="table-penilaian" width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th>NIS</th>
-                                                <th>Siswa</th>
-                                                <th>Jurusan</th>
-                                                <th>Penilaian</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <!-- Change Password Tab -->
-                            <div class="tab-pane fade pt-3" id="profile-change-password">
-                                <!-- Change Password Form -->
-                                <form id="changePasswordForm">
-                                    @csrf
-                                    <div class="row mb-3">
-                                        <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current
-                                            Password</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="password" type="password" class="form-control"
-                                                id="currentPassword" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New
-                                            Password</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="newpassword" type="password" class="form-control"
-                                                id="newPassword" minlength="8" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New
-                                            Password</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="renewpassword" type="password" class="form-control"
-                                                id="renewPassword" minlength="8" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-primary">Ganti Password</button>
-                                    </div>
-                                </form><!-- End Change Password Form -->
-                            </div>
-                        @endif
                     </div><!-- End Bordered Tabs -->
                 </div>
             </div>
         </div>
     </div>
 
-    @if (session('id_instruktur') == $instruktur->id_instruktur || in_array(auth()->user()->role, [1, 2]))
+    @if (in_array(auth()->user()->role, [1, 2, 4]) || session('id_dudi') == $dudi->id_dudi)
         <!-- Modal -->
-        <div class="modal fade" id="catatanModal" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalTitle">Form Catatan</h5>
+                        <h5 class="modal-title" id="modalTitle">Tambah</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="catatanForm" class="row g-3 needs-validation" novalidate>
+                        <form id="myForm" class="row g-3 needs-validation" novalidate>
                             @csrf
-                            <input type="hidden" id="id_presensi" name="id_presensi">
-                            <div class="mb-3">
-                                <label for="catatan" class="form-label">Catatan</label>
-                                <textarea class="form-control" id="catatan" name="catatan" rows="3" required></textarea>
-                                <div class="invalid-feedback"> Catatan wajib diisi. </div>
+                            <input type="hidden" id="stt" name="stt" value="0">
+                            <input type="hidden" id="id_ketersediaan" name="id_ketersediaan">
+                            <div class="form-group">
+                                <label for="tanggal">Tanggal</label>
+                                <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+                                <div class="invalid-feedback">Isian tidak boleh kosong.</div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="KendalaSaranModal" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Kendala & Saran</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="kendalaSaranForm" class="row g-3 needs-validation" novalidate>
-                            @csrf
-                            <input type="hidden" id="idKendalaSaran" name="idKendalaSaran">
-                            <input type="hidden" id="id_instruktur" name="id_instruktur"
-                                value="{{ $instruktur->id_instruktur }}">
                             <div class="mb-3">
-                                <label for="kategori" class="form-label">Kategori</label>
-                                <select class="form-select" id="kategori" name="kategori" required>
+                                <label for="id_jurusan" class="form-label">Jurusan</label>
+                                <select class="form-select" id="id_jurusan" name="id_jurusan" required>
                                     <option value="">Pilih</option>
-                                    <option value="K">Kendala</option>
-                                    <option value="S">Saran</option>
+                                    @foreach ($jurusan as $item)
+                                        <option value="{{ $item->id_jurusan }}">{{ $item->jurusan }}</option>
+                                    @endforeach
                                 </select>
-                                <div class="invalid-feedback">
-                                    Kategori wajib dipilih.
-                                </div>
+                                <div class="invalid-feedback"> Jurusan wajib dipilih. </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="tanggal" class="form-label">Tanggal</label>
-                                <input type="date" class="form-select" name="tanggal" id="tanggal" required>
-                                <div class="invalid-feedback">
-                                    Tanggal wajib diisi.
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="catatanKendalaSaran" class="form-label">Catatan</label>
-                                <textarea class="form-control" id="catatanKendalaSaran" name="catatanKendalaSaran" rows="3" required></textarea>
-                                <div class="invalid-feedback"> Catatan Kendala / Saran wajib diisi. </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+
+                            <input type="hidden" id="id_dudi" name="id_dudi" value="{{ $dudi->id_dudi }}">
+
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </form>
                     </div>
                 </div>
@@ -374,405 +200,221 @@
 @section('js')
     <script src="{{ asset('assets') }}/vendor/dataTables/dataTables.js"></script>
     <script src="{{ asset('assets') }}/vendor/dataTables/dataTables.bootstrap5.js"></script>
+    <script src="{{ asset('assets') }}/vendor/leaflet/leaflet.js"></script>
+    <script>
+        // Langkah 2: Inisialisasi Peta
+        var map = L.map('map').setView([{{ $dudi->latitude }}, {{ $dudi->longitude }}],
+            13); // Koordinat Jakarta sebagai contoh
 
+        // Tambahkan Tile Layer dari OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Langkah 3: Tambahkan Pin (Marker) pada peta
+        var marker = L.marker([{{ $dudi->latitude }}, {{ $dudi->longitude }}]).addTo(map) // Koordinat Jakarta
+            .bindPopup('{{ $dudi->nama }}')
+            .openPopup();
+    </script>
     <script>
         $(function() {
-            var table1 = $('#table-data-siswa').DataTable({
+            var table1 = $('#table-siswa').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: '{!! route('d.instruktur.siswa.data') !!}',
+                    url: '{!! route('d.dudi.siswa.data') !!}', // Route untuk fetch data siswa
                     type: 'GET',
                     data: function(d) {
-                        // Menambahkan parameter tambahan yang akan dikirim ke server
-                        d.id = '{{ $instruktur->id_instruktur }}'; // Ambil nilai ID Instruktur
+                        d.id = '{{ $dudi->id_dudi }}'; // Kirim ID Dudi
                         d.id_ta = $('#id_ta').val();
                     }
                 },
                 columns: [{
-                        data: 'siswa.nis',
-                        name: 'siswa.nis'
-                    },
-                    {
-                        data: 'siswa.nisn',
-                        name: 'siswa.nisn'
-                    },
-                    {
-                        data: 'nama_siswa',
-                        name: 'siswa.nama'
-                    },
-                    {
-                        data: 'nama_guru',
-                        name: 'guru.nama'
-                    }
-                ]
-            });
-            var table2 = $('#table-presensi').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: '{!! route('d.instruktur.siswa.kegiatan') !!}',
-                    type: 'GET',
-                    data: function(d) {
-                        // Menambahkan parameter tambahan yang akan dikirim ke server
-                        d.id =
-                            '{{ $instruktur->id_instruktur }}'; // Ambil nilai NIS dari elemen input atau lainnya
-                        d.stt = '1';
-                        d.id_ta = $('#id_ta').val();
-                    }
-                },
-                columns: [{
-                        data: 'tanggal',
-                        name: 'tanggal'
-                    },
-                    {
-                        data: 'nama_siswa',
-                        name: 'siswa.nama'
-                    },
-                    {
-                        data: 'presensi_masuk',
-                        name: 'masuk'
-                    },
-                    {
-                        data: 'presensi_pulang',
-                        name: 'pulang'
-                    },
-                ]
-            });
-            var table3 = $('#table-catatan').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: '{!! route('d.instruktur.siswa.kegiatan') !!}',
-                    type: 'GET',
-                    data: function(d) {
-                        // Menambahkan parameter tambahan yang akan dikirim ke server
-                        d.id =
-                            '{{ $instruktur->id_instruktur }}'; // Ambil nilai NIS dari elemen input atau lainnya
-                        d.stt = '2';
-                        d.id_ta = $('#id_ta').val();
-                    }
-                },
-                columns: [{
-                        data: 'tanggal',
-                        name: 'tanggal'
-                    },
-                    {
-                        data: 'nama_siswa',
-                        name: 'siswa.nama'
-                    },
-                    {
-                        data: 'kegiatan',
-                        name: 'kegiatan'
-                    },
-                    {
-                        data: 'disetujui_instruktur',
-                        name: 'disetujui_instruktur'
-                    },
-                    {
-                        data: 'disetujui_guru',
-                        name: 'disetujui_guru'
-                    },
-                    {
-                        data: 'catatan',
-                        name: 'catatan'
-                    },
-                    @if (session('id_instruktur') == $instruktur->id_instruktur || in_array(auth()->user()->role, [1, 2]))
-                        {
-                            data: 'action',
-                            name: 'action',
-                            orderable: false,
-                            searchable: false
-                        }
-                    @endif
-                ]
-            });
-            var table4 = $('#table-kendala-saran').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: '{!! route('d.instruktur.kendala_saran') !!}',
-                    type: 'GET',
-                    data: function(d) {
-                        // Menambahkan parameter tambahan yang akan dikirim ke server
-                        d.id ='{{ $instruktur->id_instruktur }}'; // Ambil nilai NIS dari elemen input atau lainnya
-                        d.id_ta = $('#id_ta').val();
-                    }
-                },
-                columns: [{
-                        data: 'tanggal',
-                        name: 'tanggal'
-                    },
-                    {
-                        data: 'kategori_name',
-                        name: 'kategori'
-                    },
-                    {
-                        data: 'catatan',
-                        name: 'catatan'
-                    },
-                    @if (session('id_instruktur') == $instruktur->id_instruktur || in_array(auth()->user()->role, [1, 2]))
-                        {
-                            data: 'action',
-                            name: 'action',
-                            orderable: false,
-                            searchable: false
-                        }
-                    @endif
-                ]
-            });
-            var table5 = $('#table-penilaian').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: '{!! route('d.instruktur.penilaian') !!}',
-                    type: 'GET',
-                    data: function(d) {
-                        d.id = '{{ $instruktur->id_instruktur }}';
-                        d.id_ta = $('#id_ta').val();
-                    }
-                },
-                columns: [
-                    {
                         data: 'nis',
                         name: 'nis'
                     },
-                {
-                    data: 'nama_siswa',
-                    name: 'nama_siswa'
+                    {
+                        data: 'nisn',
+                        name: 'nisn'
+                    },
+                    {
+                        data: 'nama_siswa',
+                        name: 'nama'
+                    }
+                ]
+            });
+            var table2 = $('#table-guru').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '{!! route('d.dudi.guru.data') !!}', // Route untuk fetch data siswa
+                    type: 'GET',
+                    data: function(d) {
+                        d.id = '{{ $dudi->id_dudi }}'; // Kirim ID Dudi
+                        d.id_ta = $('#id_ta').val();
+                    }
                 },
-                {
-                    data: 'jurusan',
-                    name: 'jurusan'
+                columns: [{
+                        data: 'id_guru',
+                        name: 'id_guru'
+                    },
+                    {
+                        data: 'nama_guru',
+                        name: 'nama'
+                    },
+                    {
+                        data: 'no_kontak',
+                        name: 'no_kontak'
+                    },
+                    {
+                        data: 'email',
+                        name: 'email'
+                    }
+                ]
+            });
+            var table3 = $('#table-instruktur').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '{!! route('d.dudi.instruktur.data') !!}', // Route untuk fetch data siswa
+                    type: 'GET',
+                    data: function(d) {
+                        d.id = '{{ $dudi->id_dudi }}'; // Kirim ID Dudi
+                        d.id_ta = $('#id_ta').val();
+                    }
                 },
-                {
-                    data: 'penilaian',
-                    name: 'penilaian'
-                }
-            ]
-        });
+                columns: [{
+                        data: 'id_instruktur',
+                        name: 'id_instruktur'
+                    },
+                    {
+                        data: 'nama_instruktur',
+                        name: 'nama'
+                    },
+                    {
+                        data: 'no_kontak',
+                        name: 'no_kontak'
+                    },
+                    {
+                        data: 'email',
+                        name: 'email'
+                    }
+                ]
+            });
+            var table4 = $('#table-ketersediaan').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '{!! route('d.dudi.ketersediaan.data') !!}', // Route untuk fetch data siswa
+                    type: 'GET',
+                    data: function(d) {
+                        d.id = '{{ $dudi->id_dudi }}'; // Kirim ID Dudi
+                        d.id_ta = $('#id_ta').val();
+                    }
+                },
+                columns: [{
+                        data: 'tanggal',
+                        name: 'tanggal'
+                    },
+                    {
+                        data: 'jurusan',
+                        name: 'jurusan'
+                    },
+                    @if (in_array(auth()->user()->role, [1, 2, 4]) || session('id_dudi') == $dudi->id_dudi)
+                        {
+                            data: 'action',
+                            name: 'action'
+                        },
+                    @endif
+                ]
+            });
 
             $('#id_ta').on('change', function() {
                 table1.ajax.reload();
                 table2.ajax.reload();
                 table3.ajax.reload();
                 table4.ajax.reload();
-                table5.ajax.reload();
             });
-            @if (session('id_instruktur') == $instruktur->id_instruktur || in_array(auth()->user()->role, [1, 2]))
-
-                $(document).on('change', '.disetujui-instruktur-radio', function() {
-                    let id = $(this).data('id');
-                    let isChecked = $(this).val(); // Mengambil nilai radio button yang dipilih (1 atau 0)
-
-                    $.ajax({
-                        url: "{{ route('d.instruktur.siswa.presensi_approval') }}", // Sesuaikan dengan endpoint yang ditentukan
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            id: id,
-                            is_acc: isChecked,
-                            stt: 'instruktur',
-                        },
-                        success: function(response) {
-                            Toast.fire({
-                                icon: "success",
-                                title: response.message
-                            });
-                        },
-                        error: function() {
-                            Toast.fire({
-                                icon: "error",
-                                title: "Gagal memperbarui status persetujuan."
-                            });
-                        }
-                    });
-                });
-                // catatan
-                $('#table-catatan').on('click', '.btn-edit', function() {
-                    var data = table3.row($(this).closest('tr')).data();
-                    $('#id_presensi').val(data.id_presensi);
-                    $('#catatan').val(data.catatan);
-                    $('#catatanModal').modal('show');
+            @if (in_array(auth()->user()->role, [1, 2, 4]) || session('id_dudi') == $dudi->id_dudi)
+                $('#btnAdd').click(function() {
+                    $('#myForm')[0].reset();
+                    $('#stt').val('0');
+                    $('#modalTitle').text('Tambah Baru');
+                    $('#myModal').modal('show');
                 });
 
-                $('#catatanForm').on('submit', function(e) {
-                    e.preventDefault();
-                    // Reset semua kelas validasi sebelumnya
-                    $(this).removeClass('was-validated');
-
-                    // Validasi HTML5 sebelum submit
-                    if (this.checkValidity() === false) {
-                        // Menambahkan kelas was-validated agar feedback tampil
-                        $(this).addClass('was-validated');
-                        return; // Menghentikan pengiriman form jika tidak valid
-                    }
-
-                    var formData = new FormData(this);
-                    var url = "{{ route('d.instruktur.siswa.catatan.update') }}";
-
-                    $.ajax({
-                        url: url,
-                        method: "POST",
-                        data: formData,
-                        contentType: false,
-                        processData: false,
-                        success: function(response) {
-                            $('#catatanModal').modal('hide');
-                            if (response.status) {
-                                table3.ajax.reload();
-                                Toast.fire({
-                                    icon: "success",
-                                    title: response.message
-                                });
-                            } else {
-                                Toast.fire({
-                                    icon: "error",
-                                    title: response.message
-                                });
-                            }
-                        },
-                        error: function() {
-                            Toast.fire({
-                                icon: "error",
-                                title: 'Woops! Fatal Error.'
-                            });
-                        }
-                    });
-                });
-
-                // kendala saran
-                $('#btnAddKendalaSaran').on('click', function() {
-                    $('#KendalaSaranModal').modal('show');
-                });
-                $('#table-kendala-saran').on('click', '.btn-edit', function() {
+                // Event click untuk tombol edit
+                $('#table-ketersediaan').on('click', '.btn-edit', function() {
                     var data = table4.row($(this).closest('tr')).data();
-                    $('#idKendalaSaran').val(data.id_catatan);
-                    $('#catatanKendalaSaran').val(data.catatan);
-                    $('#kategori').val(data.kategori);
+                    $('#stt').val('1');
                     $('#tanggal').val(data.tanggal);
-                    $('#KendalaSaranModal').modal('show');
+                    $('#id_jurusan').val(data.id_jurusan);
+                    $('#id_dudi').val(data.id_dudi);
+                    $('#id_ketersediaan').val(data.id_ketersediaan);
+                    $('#modalTitle').text('Ubah');
+                    $('#myModal').modal('show');
                 });
 
-                $('#kendalaSaranForm').on('submit', function(e) {
-                    e.preventDefault();
-                    // Reset semua kelas validasi sebelumnya
-                    $(this).removeClass('was-validated');
-                    // Validasi HTML5 sebelum submit
-                    if (this.checkValidity() === false) {
-                        // Menambahkan kelas was-validated agar feedback tampil
-                        $(this).addClass('was-validated');
-                        return; // Menghentikan pengiriman form jika tidak valid
-                    }
-                    var formData = new FormData(this);
-                    var url = "{{ route('d.instruktur.kendala_saran.upsert') }}";
-                    $.ajax({
-                        url: url,
-                        method: "POST",
-                        data: formData,
-                        contentType: false,
-                        processData: false,
-                        success: function(response) {
-                            $('#KendalaSaranModal').modal('hide');
-                            if (response.status) {
-                                table4.ajax.reload();
-                                Toast.fire({
-                                    icon: "success",
-                                    title: response.message
-                                });
-                            } else {
-                                Toast.fire({
-                                    icon: "error",
-                                    title: response.message
-                                });
-                            }
-                        },
-                        error: function() {
-                            Toast.fire({
-                                icon: "error",
-                                title: 'Woops! Fatal Error.'
-                            });
-                        }
-                    });
-                });
-            @endif
-        });
-    </script>
-
-    @if (session('id_instruktur') == $instruktur->id_instruktur || in_array(auth()->user()->role, [1, 2, 4]))
-        <script>
-            $(document).ready(function() {
-                getQuestion();
-
-                // Handle password change submission
-                $('#changePasswordForm').on('submit', function(e) {
-                    e.preventDefault();
-
-                    const currentPassword = $('#currentPassword').val();
-                    const newPassword = $('#newPassword').val();
-                    const renewPassword = $('#renewPassword').val();
-
-                    if (newPassword !== renewPassword) {
-                        Toast.fire({
-                            icon: "error",
-                            title: "Password baru tidak cocok. Silakan coba lagi."
-                        });
-                        return;
-                    }
-
-                    $.ajax({
-                        url: "{{ route('d.instruktur.akun.update') }}", // Endpoint untuk instruktur
-                        type: "POST",
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            current_password: currentPassword,
-                            new_password: newPassword,
-                            renew_password: renewPassword,
-                            id: '{{ $instruktur->id_instruktur }}'
-                        },
-                        success: function(response) {
-                            if (response.status === 'success') {
-                                Toast.fire({
-                                    icon: "success",
-                                    title: "Password berhasil diubah."
-                                });
-                                $('#changePasswordForm')[0].reset();
-                            } else {
-                                Toast.fire({
-                                    icon: "error",
-                                    title: response.message ||
-                                        "Terjadi kesalahan saat mengubah password."
-                                });
-                            }
-                        },
-                        error: function(xhr) {
-                            console.log(xhr.message);
-                            Toast.fire({
-                                icon: "error",
-                                title: xhr.message ||
-                                    "Terjadi kesalahan. Silakan coba lagi."
+                // Event click untuk tombol hapus
+                $('#table-ketersediaan').on('click', '.btn-delete', function() {
+                    var data = table4.row($(this).closest('tr')).data();
+                    var Id = data.id_ketersediaan;
+                    Swal.fire({
+                        title: "Apakah anda yakin?",
+                        text: "Anda tidak akan dapat mengembalikan ini!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Ya, hapus!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: "{{ url('d/dudi/ketersediaan/delete') }}" + "/" + Id,
+                                method: "GET",
+                                success: function(response) {
+                                    if (response.status) {
+                                        table4.ajax.reload();
+                                        Toast.fire({
+                                            icon: "success",
+                                            title: response.message
+                                        });
+                                    } else {
+                                        Toast.fire({
+                                            icon: "error",
+                                            title: response.message
+                                        });
+                                    }
+                                },
+                                error: function(response) {
+                                    // Handle error
+                                    Toast.fire({
+                                        icon: "error",
+                                        title: 'Woops! Fatal Error.'
+                                    });
+                                }
                             });
                         }
                     });
                 });
 
-
-                $('#questionForm').on('submit', function(e) {
+                $('#myForm').on('submit', function(e) {
                     e.preventDefault();
-                    var form = $(this)[0];
+                    var form = $(this)[0]; // Get the form element
                     if (form.checkValidity() === false) {
                         e.stopPropagation();
                     } else {
-                        var url = "{{ route('d.siswa.quesioner.upsert') }}";
+                        var url = "{{ route('d.dudi.ketersediaan.upsert') }}";
                         var formData = $(this).serialize();
-
                         $.ajax({
                             url: url,
                             method: "POST",
                             data: formData,
                             success: function(response) {
-                                getNilaiQuestion();
+                                $('#myModal').modal('hide');
                                 if (response.status) {
+                                    table4.ajax.reload();
                                     Toast.fire({
                                         icon: "success",
                                         title: response.message
@@ -793,102 +435,12 @@
                         });
                     }
                 });
-            });
-        </script>
-
-
-<script>
-    function getQuestion() {
-        // Tampilkan spinner sebelum memulai AJAX
-        $('#spinner').show();
-
-        // Load data dengan AJAX
-        $.ajax({
-            url: "{{ route('d.siswa.quesioner') }}", // Endpoint backend
-            type: "GET",
-            data: {
-                id_ta: $('#id_ta').val(),
-            },
-            success: function(response) {
-                // Sembunyikan spinner setelah data berhasil dimuat
-                $('#spinner').hide();
-
-                if (response.status === 'success') {
-                    const questions = response.data;
-                    const tableBody = $('#quesioner-table');
-                    tableBody.empty();
-                    // Render data ke tabel
-                    questions.forEach(question => {
-                        const row = `
-                        <tr>
-                            <td>
-                                ${question.soal}
-                                <input type="hidden" name="id_nilai[${question.id_quesioner}]" value="">
-                            </td>
-                            <td>
-                                <input type="radio" name="quesioner[${question.id_quesioner}]" value="1" required>
-                            </td>
-                            <td>
-                                <input type="radio" name="quesioner[${question.id_quesioner}]" value="0">
-                            </td>
-                        </tr>
-                    `;
-                        tableBody.append(row);
-                    });
-                    getNilaiQuestion();
-                } else {
-                    Toast.fire({
-                        icon: "error",
-                        title: response.message
-                    });
-                }
-            },
-            error: function() {
-                // Sembunyikan spinner jika terjadi error
-                $('#spinner').hide();
-                alert('Gagal memuat data pertanyaan.');
-            }
+            @endif
         });
-    }
-
-
-    function getNilaiQuestion() {
-        var nis = '{{ $instruktur->id_instruktur }}';
-        var id_ta = $('#id_ta').val();
-
-        $.ajax({
-            url: "{{ url('d/siswa/quesioner/edit') }}/" + nis + "/" + id_ta,
-            method: 'GET',
-            success: function(response) {
-                if (response.status === 'success') {
-                    var data = response.data;
-
-                    $('#stt').val('1');
-                    $('#id_nilai').val(data.id_nilai);
-                    // Clear previous selections for radio buttons
-                    $('input[name^="quesioner"]').prop('checked', false);
-
-                    // Set quesioner values based on response
-                    data.quesioner.forEach(function(question) {
-                        $(`input[name="quesioner[${question.id_quesioner}]"][value="${question.nilai}"]`)
-                            .prop('checked', true);
-                        $(`input[name="id_nilai[${question.id_quesioner}]"]`).val(question
-                            .id_nilai);
-                    });
-                } else {
-                    $('#stt').val('0');
-                }
-            },
-            // error: function() {
-            //     alert('Terjadi kesalahan.');
-            // }
-        });
-    }
-</script>
-
-    @endif
+    </script>
 @endsection
 
 @section('css')
     <link href="{{ asset('assets') }}/vendor/dataTables/dataTables.bootstrap5.css" rel="stylesheet">
+    <link href="{{ asset('assets') }}/vendor/leaflet/leaflet.css" rel="stylesheet">
 @endsection

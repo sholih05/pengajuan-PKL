@@ -30,7 +30,9 @@ class ProfilDudiController extends Controller
         $instruktur = Instruktur::where('id_dudi', $id)->get();
         $thnAkademik = ThnAkademik::active()->orderBy('id_ta', 'desc')->get();
         $jurusan= Jurusan::where('is_active',true)->get();
-        return view('dudi.dudi.profile', compact('instruktur', 'thnAkademikAktif', 'dudi', 'thnAkademik','jurusan'));
+        $ta = ThnAkademik::where('is_active', true)->orderBy('id_ta', 'desc')->get();
+        // dd($instruktur);
+        return view('dudi.dudi.profile', compact('instruktur','ta', 'thnAkademikAktif', 'dudi', 'thnAkademik','jurusan'));
     }
 
 

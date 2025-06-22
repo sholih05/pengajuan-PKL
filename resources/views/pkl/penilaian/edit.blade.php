@@ -63,6 +63,14 @@
             @csrf
             @method('PUT')
 
+            <div class="row mb-3 mt-4">
+                <div class="col-md-12">
+                    <label for="projectpkl" class="form-label">Masukkan Judul Project PKL</label>
+                    <input class="form-control" id="projectpkl" name="projectpkl"
+                              value="{{ $projectpkl->projectpkl ?? '' }}"></input>
+                </div>
+            </div>
+
             <h5 class="card-title">Edit Form Penilaian</h5>
             <div class="alert alert-info">
                 <i class="bi bi-info-circle"></i>

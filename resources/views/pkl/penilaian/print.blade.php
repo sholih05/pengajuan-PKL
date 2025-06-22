@@ -174,7 +174,7 @@
         <tr>
             <td class="label">Projek PKL</td>
             <td class="separator">:</td>
-            <td class="value">{{ $siswa->projek_pkl ?? 'Sesuai dengan bidang keahlian' }}</td>
+            <td class="value">{{ $projectpkl->projectpkl ?? 'N/A' }}</td>
         </tr>
         <tr>
             <td class="label">Kompetensi Keahlian</td>
@@ -548,15 +548,15 @@
             <tbody>
                 <tr>
                     <td style="width: 50%;">Sakit</td>
-                    <td style="width: 50%;">: ...................... Hari</td>
+                    <td style="width: 50%;">: {{ $presensi->where('keterangan', 'Sakit')->sum('jumlah') }} Hari</td>
                 </tr>
                 <tr>
                     <td>Ijin</td>
-                    <td>: ...................... Hari</td>
+                    <td>: {{ $presensi->where('keterangan', 'Izin')->sum('jumlah') }} Hari</td>
                 </tr>
                 <tr>
-                    <td>Tanpa Keterangan</td>
-                    <td>: ...................... Hari</td>
+                    <td>Alpa</td>
+                    <td>: {{ $presensi->where('keterangan', 'Alpha')->sum('jumlah') }} Hari</td>
                 </tr>
             </tbody>
         </table>

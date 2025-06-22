@@ -190,7 +190,7 @@ public function search(Request $request)
             ->addColumn('aksi', function ($row) {
                 return '
                 <div class="d-flex align-items-center gap-2">
-                <button class="btn btn-sm btn-danger detail-btn" data-id="' . $row->id . '">Detail</button>
+                <button class="btn btn-sm btn-primary detail-btn" data-id="' . $row->id . '">Detail</button>
                     <div class="btn-group">
                         <button class="btn btn-sm btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Action

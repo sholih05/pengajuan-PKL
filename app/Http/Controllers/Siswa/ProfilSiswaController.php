@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\FileModel;
 use App\Models\Penempatan;
 use App\Models\Presensi;
+use App\Models\Penilaian;
 use App\Models\Quesioner;
 use App\Models\Siswa;
 use App\Models\ThnAkademik;
@@ -468,5 +469,33 @@ class ProfilSiswaController extends Controller
         // return view('siswa.pdf.resume', $data);
         $pdf = Pdf::loadView('siswa.pdf.resume', $data);
         return $pdf->stream(); // Untuk menampilkan PDF di browser
+    }
+
+    function nilaiSiswa(Request $request)
+    {
+        $siswa = Siswa::where('nis', Auth::user()->username)->first();
+
+
+        $nilai = Penilaian::where('nis', $request->nis)
+                    ->where('is_active', 1)
+                    ->get();
+
+        // dd($nilai);
+
+        return DataTables::of($nilai)
+            ->addIndexColumn() // Menambahkan nomor row
+            ->addColumn('laporan', function () {
+                return 'Hasil Nilai PKL';
+            })
+            ->addColumn('aksi', function ($nilai) {
+                return '
+                    <a href="' . route('penilaian.print', $nilai->siswa->nis) . '" class="btn btn-secondary btn-sm" target="_blank">
+                        <i class="bi bi-printer"></i> Cetak
+                    </a>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+
     }
 }

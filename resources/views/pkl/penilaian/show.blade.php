@@ -45,6 +45,10 @@
                         <th>Kelas</th>
                         <td>{{ $siswa->kelas ?? 'N/A' }}</td>
                     </tr>
+                    <tr>
+                        <th>Judul Project PKL</th>
+                        <td>{{ $projectpkl->projectpkl ?? 'N/A' }}</td>
+                    </tr>
                 </table>
             </div>
             <div class="col-md-6">
